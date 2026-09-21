@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy | Sector Rebalance App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html" class="brand">
+      <span>SECTOR</span> REBALANCE
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Research</a>
+      <a href="privacy.html" class="active">Privacy</a>
+      <a href="terms.html">Legal & Terms</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="badge badge-green">Compliance & Transparency</div>
+    <h1>Privacy Policy</h1>
+    <p>Last updated: September 2026</p>
+
+    <h2>1. Overview</h2>
+    <p>The Sector Rebalance application ("App") respects your privacy. This policy outlines how information is handled within the app, our backend services, and documentation website.</p>
+
+    <h2>2. Data Collection and Usage</h2>
+    <ul>
+      <li><strong>Portfolio Settings:</strong> Any target allocations, simulated portfolio values, or risk profile preferences chosen within the App are stored locally on your device using encrypted Android local preferences or synchronized via anonymous Google Cloud Firestore tokens if enabled.</li>
+      <li><strong>Market Data:</strong> The App reads publicly available ETF pricing and macroeconomic market regime data streamed from our Google Cloud backend. No personal identity data is attached to these queries.</li>
+      <li><strong>No Brokerage Account Credentials:</strong> The App does not collect, prompt for, or store your bank, brokerage, or trading credentials.</li>
+    </ul>
+
+    <h2>3. Cloud Services & Third-Party Infrastructure</h2>
+    <p>We use Google Cloud Services (Firestore and Cloud Functions) solely for hosting the algorithmic calculation engine, daily market regime classifications, and public ETF prices. Communication occurs over secure TLS/HTTPS connections.</p>
+
+    <h2>4. Children's Privacy</h2>
+    <p>The App is intended for adults interested in quantitative research and portfolio rebalancing mechanics. We do not knowingly collect information from children under 13.</p>
+
+    <h2>5. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Any revisions will be reflected on this page with an updated timestamp.</p>
+
+    <h2>6. Contact</h2>
+    <p>For questions regarding this policy, please refer to the project repository or our contact portal.</p>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Sector Rebalance Platform. All rights reserved.</p>
+  </footer>
+</body>
+</html>

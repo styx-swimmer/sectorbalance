@@ -1,0 +1,71 @@
+The Rebalancing Premium (Shannon's Demon).
+Idea was to check for a trading strategy. First goal to create an android app, later maybe evolving into a trading bot.
+
+Quantitative Research Report: Sector Rotation & Portfolio Rebalancing
+Executive Summary
+This research was initiated to test the claim of a predictable "3-month sector rotation" strategy. Over a series of rigorous, out-of-sample, and walk-forward empirical tests using 25+ years of market data (1998–Present), we systematically dismantled popular market timing myths and discovered a robust, mathematically sound portfolio engine based on Systematic Drift-Triggered Rebalancing.
+The Ultimate Conclusion: Predicting which sector will win or when the macro environment will shift is statistically futile for retail and most institutional algorithms. However, harvesting cross-sectional volatility through a disciplined, equal-weight sector basket with a 5% to 10% drift-triggered rebalancing band generates a reliable "Rebalancing Premium" that outperforms buy-and-hold and provides superior drawdown protection during market shocks.
+Phase 1: Debunking the "Rotation" Myths
+We first tested the core technical claims of sector rotation using the 9-sector SPDR universe (XLB, XLE, XLF, XLI, XLK, XLP, XLU, XLV, XLY).
+1. The 3-Month Momentum Claim
+Hypothesis: Sectors that outperform over the trailing 3 months will continue to outperform over the next 3 months.
+Result: Failed.
+Buying the top 3 trailing sectors yielded an annualized return of 6.92%, underperforming both an Equal-Weight basket (9.19%) and SPY (8.69%).
+The long-short portfolio (Long Top 3 / Short Bottom 3) generated a negative return (-3.81%).
+Statistical Proof: The 3-month rank autocorrelation was -0.021 (essentially zero). The hit-rate for top sectors remaining in the top 3 was 32.4%, which is worse than the random baseline of 33.3%.
+2. Calendar Seasonality & Fixed Cycles
+Hypothesis: Sectors exhibit reliable calendar-month effects or operate on fixed mathematical sine-wave cycles.
+Result: Failed.
+ANOVA tests showed that only Materials (XLB) had a statistically significant calendar effect (p=0.0124). All other sectors were statistically random across calendar months.
+Autocorrelation (ACF) tests up to 24 months showed no peaks above the statistical significance threshold of ~0.11. The highest peak was a mere 0.053 at Lag 15. Sector returns do not operate on predictable time cycles.
+Phase 2: Macro & Regime Timing
+Since pure price momentum failed, we tested if hidden market environments or macroeconomic data could predict sector leadership.
+1. Hidden Markov Models (HMM)
+Method: Used machine learning to cluster SPY's daily returns, volatility, momentum, and trend into 3 distinct "Hidden Regimes."
+Result: Explanatory, not Predictive.
+The model successfully identified Regime 1 (Low-Vol Bull), Regime 2 (Grind-Up), and Regime 3 (High-Vol Bear).
+However, ANOVA tests proved that next-month sector returns within these regimes were not statistically different from one another (p-values mostly > 0.05). The "tide" (the regime) matters more than the "boat" (the sector).
+2. FRED Macro Overlay (Yield Curve, CPI, Unemployment)
+Method: Mapped FRED macroeconomic data to the HMM regimes to see if macro variables could predict regime shifts.
+Result: Weak & Lagged.
+Feature importance showed CPI (31%) and the Yield Curve (25%) were the top predictors, but the 1-month lagged predictive power was poor.
+The Yield Curve Myth: Social media claims that an inverted yield curve predicts immediate crashes. Our multi-lag test proved the strongest correlation to a Bear Regime occurs at a 24-month lag (correlation of only -0.220). Furthermore, the yield curve was inverted only 10% of the time 6 months prior to a bear regime. It is a lagging/coincident macro curiosity, not a tradeable timing signal.
+3. Fed Liquidity (QE / QT)
+Method: Tested if the Fed's Balance Sheet (WALCL) momentum predicts regimes.
+Result: Endogeneity Trap. Massive QE occurred during Bear regimes (e.g., 2008, 2020) because the Fed was reacting to the crash, not causing it. The sample size for QT was too small to be statistically relevant.
+Phase 3: The Walk-Forward Reality Check
+We built a strict, out-of-sample Walk-Forward backtest to simulate real-world trading of the HMM Regime model (moving to Cash when the model detects Regime 3).
+
+
+The Verdict: Regime timing successfully acts as a "Shock Absorber" (reducing max drawdown by 15%), but it destroys long-term wealth due to whipsaw and missing the violent V-shape recoveries that drive stock market compounding.
+Phase 4: The Winning Engine (Systematic Rebalancing)
+Abandoning prediction, we tested a purely mechanical, structural approach: The Rebalancing Premium (Shannon's Demon).
+The Asset: Equal-Weight 9-Sector Basket.
+The Mechanic: Rebalancing back to target weights when sector drift exceeds a specific threshold.
+The Result: Systematically buying underperforming sectors and trimming outperforming sectors harvests cross-sectional volatility, generating alpha without requiring market prediction.
+Band Threshold Optimization (1998–Present)
+We tested various drift tolerances to find the mathematical "sweet spot" balancing return against turnover costs (assumed at 2 bps one-way).
+
+
+The Verdict: The 10% band offers the highest absolute return and capital efficiency (lowest turnover). The 5% band offers slightly tighter risk control and is excellent for "shock absorption." Both vastly outperform the un-rebalanced drift portfolio and SPY over the long term.
+Subperiod Robustness (The "When it Works" Matrix)
+Rebalancing is not a magic bullet; it behaves differently depending on the macroeconomic era:
+1998–2008 (Dot-Com & GFC Crashes): Massive Outperformance. SPY returned -1.62%. The 5% Rebalancing strategy returned +2.05%. It protected capital by systematically buying the crash dips and trimming the bursting bubbles.
+2009–2019 (Post-GFC Tech Bull): Underperformance. SPY returned +15.55%. Rebalancing lagged because it forced the portfolio to constantly sell the mega-cap Tech winners to buy lagging sectors like Energy/Utilities.
+2020–2026 (Pandemic & Inflation): The Ultimate Shield. While SPY won on raw return (+15.73% vs 13.62%), the Rebalancing strategy cut the Max Drawdown nearly in half (-16.28% vs SPY's -23.93%).
+Phase 5: Edge Cases & Over-Engineering
+To ensure the 5% band wasn't leaving money on the table, we tested a Calendar-Adaptive Engine.
+Hypothesis: Using 10-year regime seasonality data, we tightened bands to 3% in high-variance months (June/Sept) and widened them to 10% in high-momentum months (Nov/Summer).
+Result: Failed. The adaptive engine underperformed the static 5% band by -0.13%.
+Lesson: The market's seasonal anomalies are mostly noise. Static mathematical discipline (the 5-10% band) is vastly superior to trying to outsmart the calendar with heuristics.
+Final Architecture Recommendations for the App
+Based on this exhaustive research, the app should be built around the following core pillars:
+Core Portfolio Engine: Default to an Equal-Weight Sector ETF basket. Avoid cap-weighted SPY concentration risk.
+The Rebalancing Trigger: Implement a Drift-Triggered Rebalancing Engine.
+Allow users to select their "Risk Profile":
+Wealth Compounder: 10% Drift Band (Maximizes efficiency, lets winners run).
+Shock Absorber: 5% Drift Band (Harvests volatility, tighter risk control).
+Volatility Overlay (Future Integration): Instead of using volatility predictions to change the rebalancing bands (which we proved is fragile), use your existing Volatility App to change Total Portfolio Exposure.
+Low Predicted Vol: 100% Invested in the Rebalancing Engine.
+High Predicted Vol: Scale down to 50% Invested / 50% Cash.
+User Education / UI: Build dashboards that visually explain why the app is forcing a rebalance (e.g., "Tech is now 18% of your portfolio, exceeding the 10% drift threshold. Trimming to lock in gains and buying undervalued Energy."). Show the "Rebalancing Premium" they are capturing compared to a buy-and-hold drift.

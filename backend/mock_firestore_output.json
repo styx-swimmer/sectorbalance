@@ -1,0 +1,1848 @@
+{
+  "timestamp": "2026-09-21T21:56:46.379146Z",
+  "market_regime": {
+    "regime_key": "LOW_VOL_GRIND_UP",
+    "title": "Low Volatility / Slow Grind Up",
+    "badge_color": "#10B981",
+    "icon": "trending_up",
+    "recommendation": "100% Invested in Rebalancing Engine",
+    "exposure_pct": 100,
+    "description": "Bullish, steady compounding environment. Volatility is low and momentum is stable.",
+    "confidence": 82.0,
+    "probabilities": {
+      "LOW_VOL_GRIND_UP": 82.0,
+      "CHOPPY_SIDEWAYS": 13.0,
+      "HIGH_VOL_CRASH": 5.0
+    },
+    "regime_params": {
+      "low_vol_profile": {
+        "vol": 20.28,
+        "return": 0.08
+      },
+      "choppy_profile": {
+        "vol": 21.28,
+        "return": 0.01
+      },
+      "high_vol_profile": {
+        "vol": 22.27,
+        "return": -0.15
+      }
+    }
+  },
+  "sectors_current": {
+    "XLB": {
+      "price": 91.46,
+      "change_pct": -0.04
+    },
+    "XLE": {
+      "price": 88.99,
+      "change_pct": -0.23
+    },
+    "XLF": {
+      "price": 46.3,
+      "change_pct": -1.06
+    },
+    "XLI": {
+      "price": 129.04,
+      "change_pct": 0.5
+    },
+    "XLK": {
+      "price": 230.59,
+      "change_pct": -0.65
+    },
+    "XLP": {
+      "price": 80.62,
+      "change_pct": 0.9
+    },
+    "XLU": {
+      "price": 75.04,
+      "change_pct": 1.0
+    },
+    "XLV": {
+      "price": 147.69,
+      "change_pct": 0.06
+    },
+    "XLY": {
+      "price": 192.91,
+      "change_pct": -0.82
+    },
+    "XLC": {
+      "price": 89.43,
+      "change_pct": 0.82
+    },
+    "XLRE": {
+      "price": 41.6,
+      "change_pct": -1.18
+    },
+    "SPY": {
+      "price": 571.17,
+      "change_pct": -0.7
+    }
+  },
+  "portfolio_state": {
+    "portfolio_value": 99999.46,
+    "target_per_sector": 9.09,
+    "risk_profile": "Shock Absorber",
+    "drift_threshold_pct": 5.0,
+    "max_drift_pct": 0.0,
+    "status": "BALANCED",
+    "rebalance_needed": false,
+    "breached_sectors": [],
+    "sectors": [
+      {
+        "ticker": "XLB",
+        "name": "Materials",
+        "price": 91.46,
+        "shares": 99.4,
+        "value": 9091.12,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": 0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      },
+      {
+        "ticker": "XLE",
+        "name": "Energy",
+        "price": 88.99,
+        "shares": 102.16,
+        "value": 9091.22,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": 0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      },
+      {
+        "ticker": "XLF",
+        "name": "Financials",
+        "price": 46.3,
+        "shares": 196.35,
+        "value": 9091.0,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": 0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      },
+      {
+        "ticker": "XLI",
+        "name": "Industrials",
+        "price": 129.04,
+        "shares": 70.45,
+        "value": 9090.87,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": 0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      },
+      {
+        "ticker": "XLK",
+        "name": "Technology",
+        "price": 230.59,
+        "shares": 39.42,
+        "value": 9089.86,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": -0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      },
+      {
+        "ticker": "XLP",
+        "name": "Consumer Staples",
+        "price": 80.62,
+        "shares": 112.76,
+        "value": 9090.71,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": -0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      },
+      {
+        "ticker": "XLU",
+        "name": "Utilities",
+        "price": 75.04,
+        "shares": 121.15,
+        "value": 9091.1,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": 0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      },
+      {
+        "ticker": "XLV",
+        "name": "Health Care",
+        "price": 147.69,
+        "shares": 61.55,
+        "value": 9090.32,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": -0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      },
+      {
+        "ticker": "XLY",
+        "name": "Consumer Discretionary",
+        "price": 192.91,
+        "shares": 47.13,
+        "value": 9091.85,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": 0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      },
+      {
+        "ticker": "XLC",
+        "name": "Communication Services",
+        "price": 89.43,
+        "shares": 101.65,
+        "value": 9090.56,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": -0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      },
+      {
+        "ticker": "XLRE",
+        "name": "Real Estate",
+        "price": 41.6,
+        "shares": 218.53,
+        "value": 9090.85,
+        "current_weight": 9.09,
+        "target_weight": 9.09,
+        "drift_pct": -0.0,
+        "abs_drift_pct": 0.0,
+        "status": "BALANCED",
+        "is_breached": false
+      }
+    ],
+    "orders": [
+      {
+        "ticker": "XLB",
+        "name": "Materials",
+        "action": "HOLD",
+        "current_shares": 99.4,
+        "target_shares": 99.4,
+        "share_change": 0.0,
+        "current_value": 9091.12,
+        "target_value": 9090.86,
+        "dollar_amount": 0.26,
+        "is_trigger_source": false
+      },
+      {
+        "ticker": "XLE",
+        "name": "Energy",
+        "action": "HOLD",
+        "current_shares": 102.16,
+        "target_shares": 102.16,
+        "share_change": 0.0,
+        "current_value": 9091.22,
+        "target_value": 9090.86,
+        "dollar_amount": 0.36,
+        "is_trigger_source": false
+      },
+      {
+        "ticker": "XLF",
+        "name": "Financials",
+        "action": "HOLD",
+        "current_shares": 196.35,
+        "target_shares": 196.35,
+        "share_change": 0.0,
+        "current_value": 9091.0,
+        "target_value": 9090.86,
+        "dollar_amount": 0.14,
+        "is_trigger_source": false
+      },
+      {
+        "ticker": "XLI",
+        "name": "Industrials",
+        "action": "HOLD",
+        "current_shares": 70.45,
+        "target_shares": 70.45,
+        "share_change": 0.0,
+        "current_value": 9090.87,
+        "target_value": 9090.86,
+        "dollar_amount": 0.01,
+        "is_trigger_source": false
+      },
+      {
+        "ticker": "XLK",
+        "name": "Technology",
+        "action": "HOLD",
+        "current_shares": 39.42,
+        "target_shares": 39.42,
+        "share_change": 0.0,
+        "current_value": 9089.86,
+        "target_value": 9090.86,
+        "dollar_amount": 1.0,
+        "is_trigger_source": false
+      },
+      {
+        "ticker": "XLP",
+        "name": "Consumer Staples",
+        "action": "HOLD",
+        "current_shares": 112.76,
+        "target_shares": 112.76,
+        "share_change": 0.0,
+        "current_value": 9090.71,
+        "target_value": 9090.86,
+        "dollar_amount": 0.15,
+        "is_trigger_source": false
+      },
+      {
+        "ticker": "XLU",
+        "name": "Utilities",
+        "action": "HOLD",
+        "current_shares": 121.15,
+        "target_shares": 121.15,
+        "share_change": 0.0,
+        "current_value": 9091.1,
+        "target_value": 9090.86,
+        "dollar_amount": 0.24,
+        "is_trigger_source": false
+      },
+      {
+        "ticker": "XLV",
+        "name": "Health Care",
+        "action": "HOLD",
+        "current_shares": 61.55,
+        "target_shares": 61.55,
+        "share_change": 0.0,
+        "current_value": 9090.32,
+        "target_value": 9090.86,
+        "dollar_amount": 0.54,
+        "is_trigger_source": false
+      },
+      {
+        "ticker": "XLY",
+        "name": "Consumer Discretionary",
+        "action": "HOLD",
+        "current_shares": 47.13,
+        "target_shares": 47.12,
+        "share_change": 0.01,
+        "current_value": 9091.85,
+        "target_value": 9090.86,
+        "dollar_amount": 0.99,
+        "is_trigger_source": false
+      },
+      {
+        "ticker": "XLC",
+        "name": "Communication Services",
+        "action": "HOLD",
+        "current_shares": 101.65,
+        "target_shares": 101.65,
+        "share_change": 0.0,
+        "current_value": 9090.56,
+        "target_value": 9090.86,
+        "dollar_amount": 0.3,
+        "is_trigger_source": false
+      },
+      {
+        "ticker": "XLRE",
+        "name": "Real Estate",
+        "action": "HOLD",
+        "current_shares": 218.53,
+        "target_shares": 218.53,
+        "share_change": 0.0,
+        "current_value": 9090.85,
+        "target_value": 9090.86,
+        "dollar_amount": 0.01,
+        "is_trigger_source": false
+      }
+    ],
+    "turnover_dollars": 0.0,
+    "turnover_pct": 0.0,
+    "estimated_fee_dollars": 0.0,
+    "educational_rationale": "Portfolio is within disciplined tolerance. Max drift is currently 0.0% (below the 5.0% band). No action required; letting compounders run while avoiding unnecessary turnover fees."
+  },
+  "performance_history": {
+    "period_days": 180,
+    "rebalance_alpha_bps": 258.0,
+    "rebalance_alpha_pct": 2.58,
+    "strategies": {
+      "rebalance_10pct": {
+        "name": "Wealth Compounder (10% Band)",
+        "total_return_pct": 14.84,
+        "max_drawdown_pct": -38.18,
+        "final_value": 114.84
+      },
+      "rebalance_5pct": {
+        "name": "Shock Absorber (5% Band)",
+        "total_return_pct": 14.31,
+        "max_drawdown_pct": -37.1,
+        "final_value": 114.31
+      },
+      "unrebalanced_drift": {
+        "name": "Un-rebalanced Buy & Hold",
+        "total_return_pct": 12.26,
+        "max_drawdown_pct": -38.48,
+        "final_value": 112.26
+      },
+      "spy_benchmark": {
+        "name": "SPY (S&P 500 ETF)",
+        "total_return_pct": 13.16,
+        "max_drawdown_pct": -40.59,
+        "final_value": 113.16
+      }
+    },
+    "history": [
+      {
+        "date": "2026-03-25",
+        "rebalance_5pct": 100.33,
+        "rebalance_10pct": 100.35,
+        "unrebalanced_drift": 100.33,
+        "spy_benchmark": 100.36,
+        "premium_vs_drift_bps": 1.5
+      },
+      {
+        "date": "2026-03-26",
+        "rebalance_5pct": 100.7,
+        "rebalance_10pct": 100.73,
+        "unrebalanced_drift": 100.7,
+        "spy_benchmark": 100.75,
+        "premium_vs_drift_bps": 3.1
+      },
+      {
+        "date": "2026-03-27",
+        "rebalance_5pct": 101.09,
+        "rebalance_10pct": 101.13,
+        "unrebalanced_drift": 101.09,
+        "spy_benchmark": 101.17,
+        "premium_vs_drift_bps": 4.7
+      },
+      {
+        "date": "2026-03-28",
+        "rebalance_5pct": 101.51,
+        "rebalance_10pct": 101.57,
+        "unrebalanced_drift": 101.51,
+        "spy_benchmark": 101.61,
+        "premium_vs_drift_bps": 6.3
+      },
+      {
+        "date": "2026-03-29",
+        "rebalance_5pct": 101.95,
+        "rebalance_10pct": 102.03,
+        "unrebalanced_drift": 101.95,
+        "spy_benchmark": 102.09,
+        "premium_vs_drift_bps": 7.9
+      },
+      {
+        "date": "2026-03-30",
+        "rebalance_5pct": 102.41,
+        "rebalance_10pct": 102.51,
+        "unrebalanced_drift": 102.42,
+        "spy_benchmark": 102.59,
+        "premium_vs_drift_bps": 9.6
+      },
+      {
+        "date": "2026-03-31",
+        "rebalance_5pct": 102.9,
+        "rebalance_10pct": 103.02,
+        "unrebalanced_drift": 102.91,
+        "spy_benchmark": 103.12,
+        "premium_vs_drift_bps": 11.3
+      },
+      {
+        "date": "2026-04-01",
+        "rebalance_5pct": 103.41,
+        "rebalance_10pct": 103.55,
+        "unrebalanced_drift": 103.42,
+        "spy_benchmark": 103.66,
+        "premium_vs_drift_bps": 13.0
+      },
+      {
+        "date": "2026-04-02",
+        "rebalance_5pct": 103.94,
+        "rebalance_10pct": 104.1,
+        "unrebalanced_drift": 103.94,
+        "spy_benchmark": 104.23,
+        "premium_vs_drift_bps": 14.7
+      },
+      {
+        "date": "2026-04-03",
+        "rebalance_5pct": 104.48,
+        "rebalance_10pct": 104.66,
+        "unrebalanced_drift": 104.49,
+        "spy_benchmark": 104.82,
+        "premium_vs_drift_bps": 16.4
+      },
+      {
+        "date": "2026-04-04",
+        "rebalance_5pct": 105.04,
+        "rebalance_10pct": 105.25,
+        "unrebalanced_drift": 105.06,
+        "spy_benchmark": 105.43,
+        "premium_vs_drift_bps": 18.2
+      },
+      {
+        "date": "2026-04-05",
+        "rebalance_5pct": 105.62,
+        "rebalance_10pct": 105.85,
+        "unrebalanced_drift": 105.63,
+        "spy_benchmark": 106.05,
+        "premium_vs_drift_bps": 19.9
+      },
+      {
+        "date": "2026-04-06",
+        "rebalance_5pct": 106.21,
+        "rebalance_10pct": 106.46,
+        "unrebalanced_drift": 106.23,
+        "spy_benchmark": 106.69,
+        "premium_vs_drift_bps": 21.7
+      },
+      {
+        "date": "2026-04-07",
+        "rebalance_5pct": 106.81,
+        "rebalance_10pct": 107.08,
+        "unrebalanced_drift": 106.83,
+        "spy_benchmark": 107.34,
+        "premium_vs_drift_bps": 23.5
+      },
+      {
+        "date": "2026-04-08",
+        "rebalance_5pct": 107.42,
+        "rebalance_10pct": 107.72,
+        "unrebalanced_drift": 107.45,
+        "spy_benchmark": 108.0,
+        "premium_vs_drift_bps": 25.3
+      },
+      {
+        "date": "2026-04-09",
+        "rebalance_5pct": 108.04,
+        "rebalance_10pct": 108.37,
+        "unrebalanced_drift": 108.07,
+        "spy_benchmark": 108.67,
+        "premium_vs_drift_bps": 27.0
+      },
+      {
+        "date": "2026-04-10",
+        "rebalance_5pct": 108.67,
+        "rebalance_10pct": 109.02,
+        "unrebalanced_drift": 108.71,
+        "spy_benchmark": 109.36,
+        "premium_vs_drift_bps": 28.8
+      },
+      {
+        "date": "2026-04-11",
+        "rebalance_5pct": 109.31,
+        "rebalance_10pct": 109.68,
+        "unrebalanced_drift": 109.35,
+        "spy_benchmark": 110.05,
+        "premium_vs_drift_bps": 30.6
+      },
+      {
+        "date": "2026-04-12",
+        "rebalance_5pct": 109.95,
+        "rebalance_10pct": 110.35,
+        "unrebalanced_drift": 110.0,
+        "spy_benchmark": 110.75,
+        "premium_vs_drift_bps": 32.4
+      },
+      {
+        "date": "2026-04-13",
+        "rebalance_5pct": 110.6,
+        "rebalance_10pct": 111.03,
+        "unrebalanced_drift": 110.65,
+        "spy_benchmark": 111.45,
+        "premium_vs_drift_bps": 34.2
+      },
+      {
+        "date": "2026-04-14",
+        "rebalance_5pct": 111.25,
+        "rebalance_10pct": 111.71,
+        "unrebalanced_drift": 111.31,
+        "spy_benchmark": 112.16,
+        "premium_vs_drift_bps": 36.0
+      },
+      {
+        "date": "2026-04-15",
+        "rebalance_5pct": 111.91,
+        "rebalance_10pct": 112.4,
+        "unrebalanced_drift": 111.97,
+        "spy_benchmark": 112.88,
+        "premium_vs_drift_bps": 37.8
+      },
+      {
+        "date": "2026-04-16",
+        "rebalance_5pct": 112.57,
+        "rebalance_10pct": 113.09,
+        "unrebalanced_drift": 112.64,
+        "spy_benchmark": 113.6,
+        "premium_vs_drift_bps": 39.6
+      },
+      {
+        "date": "2026-04-17",
+        "rebalance_5pct": 113.24,
+        "rebalance_10pct": 113.78,
+        "unrebalanced_drift": 113.31,
+        "spy_benchmark": 114.32,
+        "premium_vs_drift_bps": 41.5
+      },
+      {
+        "date": "2026-04-18",
+        "rebalance_5pct": 113.91,
+        "rebalance_10pct": 114.48,
+        "unrebalanced_drift": 113.98,
+        "spy_benchmark": 115.05,
+        "premium_vs_drift_bps": 43.3
+      },
+      {
+        "date": "2026-04-19",
+        "rebalance_5pct": 114.58,
+        "rebalance_10pct": 115.18,
+        "unrebalanced_drift": 114.66,
+        "spy_benchmark": 115.78,
+        "premium_vs_drift_bps": 45.1
+      },
+      {
+        "date": "2026-04-20",
+        "rebalance_5pct": 115.25,
+        "rebalance_10pct": 115.88,
+        "unrebalanced_drift": 115.34,
+        "spy_benchmark": 116.51,
+        "premium_vs_drift_bps": 46.9
+      },
+      {
+        "date": "2026-04-21",
+        "rebalance_5pct": 115.92,
+        "rebalance_10pct": 116.58,
+        "unrebalanced_drift": 116.02,
+        "spy_benchmark": 117.25,
+        "premium_vs_drift_bps": 48.7
+      },
+      {
+        "date": "2026-04-22",
+        "rebalance_5pct": 116.6,
+        "rebalance_10pct": 117.29,
+        "unrebalanced_drift": 116.7,
+        "spy_benchmark": 117.99,
+        "premium_vs_drift_bps": 50.5
+      },
+      {
+        "date": "2026-04-23",
+        "rebalance_5pct": 117.28,
+        "rebalance_10pct": 118.0,
+        "unrebalanced_drift": 117.38,
+        "spy_benchmark": 118.73,
+        "premium_vs_drift_bps": 52.2
+      },
+      {
+        "date": "2026-04-24",
+        "rebalance_5pct": 117.96,
+        "rebalance_10pct": 118.71,
+        "unrebalanced_drift": 118.07,
+        "spy_benchmark": 119.47,
+        "premium_vs_drift_bps": 54.0
+      },
+      {
+        "date": "2026-04-25",
+        "rebalance_5pct": 118.65,
+        "rebalance_10pct": 119.42,
+        "unrebalanced_drift": 118.76,
+        "spy_benchmark": 120.22,
+        "premium_vs_drift_bps": 55.8
+      },
+      {
+        "date": "2026-04-26",
+        "rebalance_5pct": 119.34,
+        "rebalance_10pct": 120.14,
+        "unrebalanced_drift": 119.45,
+        "spy_benchmark": 120.98,
+        "premium_vs_drift_bps": 57.6
+      },
+      {
+        "date": "2026-04-27",
+        "rebalance_5pct": 120.03,
+        "rebalance_10pct": 120.87,
+        "unrebalanced_drift": 120.15,
+        "spy_benchmark": 121.73,
+        "premium_vs_drift_bps": 59.4
+      },
+      {
+        "date": "2026-04-28",
+        "rebalance_5pct": 120.73,
+        "rebalance_10pct": 121.6,
+        "unrebalanced_drift": 120.86,
+        "spy_benchmark": 122.5,
+        "premium_vs_drift_bps": 61.2
+      },
+      {
+        "date": "2026-04-29",
+        "rebalance_5pct": 121.43,
+        "rebalance_10pct": 122.33,
+        "unrebalanced_drift": 121.56,
+        "spy_benchmark": 123.27,
+        "premium_vs_drift_bps": 63.0
+      },
+      {
+        "date": "2026-04-30",
+        "rebalance_5pct": 122.14,
+        "rebalance_10pct": 123.07,
+        "unrebalanced_drift": 122.28,
+        "spy_benchmark": 124.04,
+        "premium_vs_drift_bps": 64.8
+      },
+      {
+        "date": "2026-05-01",
+        "rebalance_5pct": 122.86,
+        "rebalance_10pct": 123.82,
+        "unrebalanced_drift": 123.0,
+        "spy_benchmark": 124.83,
+        "premium_vs_drift_bps": 66.6
+      },
+      {
+        "date": "2026-05-02",
+        "rebalance_5pct": 123.58,
+        "rebalance_10pct": 124.58,
+        "unrebalanced_drift": 123.73,
+        "spy_benchmark": 125.62,
+        "premium_vs_drift_bps": 68.4
+      },
+      {
+        "date": "2026-05-03",
+        "rebalance_5pct": 124.32,
+        "rebalance_10pct": 125.35,
+        "unrebalanced_drift": 124.47,
+        "spy_benchmark": 126.43,
+        "premium_vs_drift_bps": 70.3
+      },
+      {
+        "date": "2026-05-04",
+        "rebalance_5pct": 125.06,
+        "rebalance_10pct": 126.13,
+        "unrebalanced_drift": 125.22,
+        "spy_benchmark": 127.25,
+        "premium_vs_drift_bps": 72.1
+      },
+      {
+        "date": "2026-05-05",
+        "rebalance_5pct": 125.82,
+        "rebalance_10pct": 126.92,
+        "unrebalanced_drift": 125.99,
+        "spy_benchmark": 128.08,
+        "premium_vs_drift_bps": 73.9
+      },
+      {
+        "date": "2026-05-06",
+        "rebalance_5pct": 126.58,
+        "rebalance_10pct": 127.72,
+        "unrebalanced_drift": 126.76,
+        "spy_benchmark": 128.92,
+        "premium_vs_drift_bps": 75.7
+      },
+      {
+        "date": "2026-05-07",
+        "rebalance_5pct": 127.37,
+        "rebalance_10pct": 128.54,
+        "unrebalanced_drift": 127.55,
+        "spy_benchmark": 129.78,
+        "premium_vs_drift_bps": 77.6
+      },
+      {
+        "date": "2026-05-08",
+        "rebalance_5pct": 128.16,
+        "rebalance_10pct": 129.37,
+        "unrebalanced_drift": 128.36,
+        "spy_benchmark": 130.66,
+        "premium_vs_drift_bps": 79.4
+      },
+      {
+        "date": "2026-05-09",
+        "rebalance_5pct": 128.98,
+        "rebalance_10pct": 130.23,
+        "unrebalanced_drift": 129.18,
+        "spy_benchmark": 131.55,
+        "premium_vs_drift_bps": 81.3
+      },
+      {
+        "date": "2026-05-10",
+        "rebalance_5pct": 129.8,
+        "rebalance_10pct": 131.09,
+        "unrebalanced_drift": 130.01,
+        "spy_benchmark": 132.47,
+        "premium_vs_drift_bps": 83.1
+      },
+      {
+        "date": "2026-05-11",
+        "rebalance_5pct": 130.65,
+        "rebalance_10pct": 131.98,
+        "unrebalanced_drift": 130.87,
+        "spy_benchmark": 133.4,
+        "premium_vs_drift_bps": 85.0
+      },
+      {
+        "date": "2026-05-12",
+        "rebalance_5pct": 131.52,
+        "rebalance_10pct": 132.89,
+        "unrebalanced_drift": 131.74,
+        "spy_benchmark": 134.35,
+        "premium_vs_drift_bps": 86.9
+      },
+      {
+        "date": "2026-05-13",
+        "rebalance_5pct": 132.4,
+        "rebalance_10pct": 133.82,
+        "unrebalanced_drift": 132.64,
+        "spy_benchmark": 135.33,
+        "premium_vs_drift_bps": 88.8
+      },
+      {
+        "date": "2026-05-14",
+        "rebalance_5pct": 133.31,
+        "rebalance_10pct": 134.77,
+        "unrebalanced_drift": 133.55,
+        "spy_benchmark": 136.33,
+        "premium_vs_drift_bps": 90.7
+      },
+      {
+        "date": "2026-05-15",
+        "rebalance_5pct": 134.24,
+        "rebalance_10pct": 135.74,
+        "unrebalanced_drift": 134.49,
+        "spy_benchmark": 137.36,
+        "premium_vs_drift_bps": 92.6
+      },
+      {
+        "date": "2026-05-16",
+        "rebalance_5pct": 135.19,
+        "rebalance_10pct": 136.73,
+        "unrebalanced_drift": 135.45,
+        "spy_benchmark": 138.41,
+        "premium_vs_drift_bps": 94.5
+      },
+      {
+        "date": "2026-05-17",
+        "rebalance_5pct": 136.16,
+        "rebalance_10pct": 137.75,
+        "unrebalanced_drift": 136.44,
+        "spy_benchmark": 139.49,
+        "premium_vs_drift_bps": 96.5
+      },
+      {
+        "date": "2026-05-18",
+        "rebalance_5pct": 137.16,
+        "rebalance_10pct": 138.8,
+        "unrebalanced_drift": 137.45,
+        "spy_benchmark": 140.59,
+        "premium_vs_drift_bps": 98.5
+      },
+      {
+        "date": "2026-05-19",
+        "rebalance_5pct": 138.18,
+        "rebalance_10pct": 139.87,
+        "unrebalanced_drift": 138.48,
+        "spy_benchmark": 141.73,
+        "premium_vs_drift_bps": 100.4
+      },
+      {
+        "date": "2026-05-20",
+        "rebalance_5pct": 139.22,
+        "rebalance_10pct": 140.96,
+        "unrebalanced_drift": 139.53,
+        "spy_benchmark": 142.88,
+        "premium_vs_drift_bps": 102.4
+      },
+      {
+        "date": "2026-05-21",
+        "rebalance_5pct": 140.29,
+        "rebalance_10pct": 142.08,
+        "unrebalanced_drift": 140.62,
+        "spy_benchmark": 144.07,
+        "premium_vs_drift_bps": 104.4
+      },
+      {
+        "date": "2026-05-22",
+        "rebalance_5pct": 141.38,
+        "rebalance_10pct": 143.23,
+        "unrebalanced_drift": 141.72,
+        "spy_benchmark": 145.28,
+        "premium_vs_drift_bps": 106.4
+      },
+      {
+        "date": "2026-05-23",
+        "rebalance_5pct": 142.5,
+        "rebalance_10pct": 144.4,
+        "unrebalanced_drift": 142.85,
+        "spy_benchmark": 146.53,
+        "premium_vs_drift_bps": 108.4
+      },
+      {
+        "date": "2026-05-24",
+        "rebalance_5pct": 143.64,
+        "rebalance_10pct": 145.6,
+        "unrebalanced_drift": 144.01,
+        "spy_benchmark": 147.8,
+        "premium_vs_drift_bps": 110.5
+      },
+      {
+        "date": "2026-05-25",
+        "rebalance_5pct": 144.8,
+        "rebalance_10pct": 146.82,
+        "unrebalanced_drift": 145.19,
+        "spy_benchmark": 149.09,
+        "premium_vs_drift_bps": 112.5
+      },
+      {
+        "date": "2026-05-26",
+        "rebalance_5pct": 145.99,
+        "rebalance_10pct": 148.06,
+        "unrebalanced_drift": 146.39,
+        "spy_benchmark": 150.41,
+        "premium_vs_drift_bps": 114.5
+      },
+      {
+        "date": "2026-05-27",
+        "rebalance_5pct": 147.19,
+        "rebalance_10pct": 149.33,
+        "unrebalanced_drift": 147.61,
+        "spy_benchmark": 151.76,
+        "premium_vs_drift_bps": 116.6
+      },
+      {
+        "date": "2026-05-28",
+        "rebalance_5pct": 148.42,
+        "rebalance_10pct": 150.62,
+        "unrebalanced_drift": 148.85,
+        "spy_benchmark": 153.13,
+        "premium_vs_drift_bps": 118.7
+      },
+      {
+        "date": "2026-05-29",
+        "rebalance_5pct": 149.66,
+        "rebalance_10pct": 151.93,
+        "unrebalanced_drift": 150.11,
+        "spy_benchmark": 154.52,
+        "premium_vs_drift_bps": 120.7
+      },
+      {
+        "date": "2026-05-30",
+        "rebalance_5pct": 150.92,
+        "rebalance_10pct": 153.25,
+        "unrebalanced_drift": 151.39,
+        "spy_benchmark": 155.93,
+        "premium_vs_drift_bps": 122.8
+      },
+      {
+        "date": "2026-05-31",
+        "rebalance_5pct": 152.2,
+        "rebalance_10pct": 154.6,
+        "unrebalanced_drift": 152.69,
+        "spy_benchmark": 157.36,
+        "premium_vs_drift_bps": 124.9
+      },
+      {
+        "date": "2026-06-01",
+        "rebalance_5pct": 153.49,
+        "rebalance_10pct": 155.95,
+        "unrebalanced_drift": 154.0,
+        "spy_benchmark": 158.8,
+        "premium_vs_drift_bps": 127.0
+      },
+      {
+        "date": "2026-06-02",
+        "rebalance_5pct": 154.79,
+        "rebalance_10pct": 157.32,
+        "unrebalanced_drift": 155.32,
+        "spy_benchmark": 160.26,
+        "premium_vs_drift_bps": 129.1
+      },
+      {
+        "date": "2026-06-03",
+        "rebalance_5pct": 156.1,
+        "rebalance_10pct": 158.7,
+        "unrebalanced_drift": 156.65,
+        "spy_benchmark": 161.73,
+        "premium_vs_drift_bps": 131.2
+      },
+      {
+        "date": "2026-06-04",
+        "rebalance_5pct": 157.42,
+        "rebalance_10pct": 160.09,
+        "unrebalanced_drift": 157.98,
+        "spy_benchmark": 163.21,
+        "premium_vs_drift_bps": 133.2
+      },
+      {
+        "date": "2026-06-05",
+        "rebalance_5pct": 158.74,
+        "rebalance_10pct": 161.48,
+        "unrebalanced_drift": 159.32,
+        "spy_benchmark": 164.69,
+        "premium_vs_drift_bps": 135.3
+      },
+      {
+        "date": "2026-06-06",
+        "rebalance_5pct": 160.06,
+        "rebalance_10pct": 162.87,
+        "unrebalanced_drift": 160.66,
+        "spy_benchmark": 166.17,
+        "premium_vs_drift_bps": 137.4
+      },
+      {
+        "date": "2026-06-07",
+        "rebalance_5pct": 161.37,
+        "rebalance_10pct": 164.26,
+        "unrebalanced_drift": 162.0,
+        "spy_benchmark": 167.65,
+        "premium_vs_drift_bps": 139.4
+      },
+      {
+        "date": "2026-06-08",
+        "rebalance_5pct": 162.68,
+        "rebalance_10pct": 165.64,
+        "unrebalanced_drift": 163.33,
+        "spy_benchmark": 169.13,
+        "premium_vs_drift_bps": 141.5
+      },
+      {
+        "date": "2026-06-09",
+        "rebalance_5pct": 163.98,
+        "rebalance_10pct": 167.01,
+        "unrebalanced_drift": 164.64,
+        "spy_benchmark": 170.59,
+        "premium_vs_drift_bps": 143.5
+      },
+      {
+        "date": "2026-06-10",
+        "rebalance_5pct": 165.27,
+        "rebalance_10pct": 168.36,
+        "unrebalanced_drift": 165.95,
+        "spy_benchmark": 172.04,
+        "premium_vs_drift_bps": 145.5
+      },
+      {
+        "date": "2026-06-11",
+        "rebalance_5pct": 166.53,
+        "rebalance_10pct": 169.7,
+        "unrebalanced_drift": 167.23,
+        "spy_benchmark": 173.47,
+        "premium_vs_drift_bps": 147.5
+      },
+      {
+        "date": "2026-06-12",
+        "rebalance_5pct": 167.78,
+        "rebalance_10pct": 171.01,
+        "unrebalanced_drift": 168.49,
+        "spy_benchmark": 174.87,
+        "premium_vs_drift_bps": 149.5
+      },
+      {
+        "date": "2026-06-13",
+        "rebalance_5pct": 169.0,
+        "rebalance_10pct": 172.3,
+        "unrebalanced_drift": 169.73,
+        "spy_benchmark": 176.24,
+        "premium_vs_drift_bps": 151.5
+      },
+      {
+        "date": "2026-06-14",
+        "rebalance_5pct": 170.19,
+        "rebalance_10pct": 173.56,
+        "unrebalanced_drift": 170.93,
+        "spy_benchmark": 177.58,
+        "premium_vs_drift_bps": 153.4
+      },
+      {
+        "date": "2026-06-15",
+        "rebalance_5pct": 171.34,
+        "rebalance_10pct": 174.78,
+        "unrebalanced_drift": 172.1,
+        "spy_benchmark": 178.88,
+        "premium_vs_drift_bps": 155.3
+      },
+      {
+        "date": "2026-06-16",
+        "rebalance_5pct": 172.45,
+        "rebalance_10pct": 175.95,
+        "unrebalanced_drift": 173.23,
+        "spy_benchmark": 180.14,
+        "premium_vs_drift_bps": 157.2
+      },
+      {
+        "date": "2026-06-17",
+        "rebalance_5pct": 173.52,
+        "rebalance_10pct": 177.09,
+        "unrebalanced_drift": 174.31,
+        "spy_benchmark": 181.34,
+        "premium_vs_drift_bps": 159.1
+      },
+      {
+        "date": "2026-06-18",
+        "rebalance_5pct": 174.54,
+        "rebalance_10pct": 178.17,
+        "unrebalanced_drift": 175.35,
+        "spy_benchmark": 182.5,
+        "premium_vs_drift_bps": 160.9
+      },
+      {
+        "date": "2026-06-19",
+        "rebalance_5pct": 175.51,
+        "rebalance_10pct": 179.19,
+        "unrebalanced_drift": 176.33,
+        "spy_benchmark": 183.59,
+        "premium_vs_drift_bps": 162.7
+      },
+      {
+        "date": "2026-06-20",
+        "rebalance_5pct": 176.43,
+        "rebalance_10pct": 180.16,
+        "unrebalanced_drift": 177.25,
+        "spy_benchmark": 184.62,
+        "premium_vs_drift_bps": 164.4
+      },
+      {
+        "date": "2026-06-21",
+        "rebalance_5pct": 177.28,
+        "rebalance_10pct": 181.07,
+        "unrebalanced_drift": 178.11,
+        "spy_benchmark": 185.57,
+        "premium_vs_drift_bps": 166.2
+      },
+      {
+        "date": "2026-06-22",
+        "rebalance_5pct": 178.06,
+        "rebalance_10pct": 181.9,
+        "unrebalanced_drift": 178.9,
+        "spy_benchmark": 186.46,
+        "premium_vs_drift_bps": 167.8
+      },
+      {
+        "date": "2026-06-23",
+        "rebalance_5pct": 178.78,
+        "rebalance_10pct": 182.66,
+        "unrebalanced_drift": 179.62,
+        "spy_benchmark": 187.27,
+        "premium_vs_drift_bps": 169.5
+      },
+      {
+        "date": "2026-06-24",
+        "rebalance_5pct": 179.43,
+        "rebalance_10pct": 183.35,
+        "unrebalanced_drift": 180.27,
+        "spy_benchmark": 187.99,
+        "premium_vs_drift_bps": 171.1
+      },
+      {
+        "date": "2026-06-25",
+        "rebalance_5pct": 180.0,
+        "rebalance_10pct": 183.96,
+        "unrebalanced_drift": 180.84,
+        "spy_benchmark": 188.63,
+        "premium_vs_drift_bps": 172.6
+      },
+      {
+        "date": "2026-06-26",
+        "rebalance_5pct": 180.49,
+        "rebalance_10pct": 184.48,
+        "unrebalanced_drift": 181.33,
+        "spy_benchmark": 189.17,
+        "premium_vs_drift_bps": 174.1
+      },
+      {
+        "date": "2026-06-27",
+        "rebalance_5pct": 180.9,
+        "rebalance_10pct": 184.92,
+        "unrebalanced_drift": 181.73,
+        "spy_benchmark": 189.63,
+        "premium_vs_drift_bps": 175.5
+      },
+      {
+        "date": "2026-06-28",
+        "rebalance_5pct": 181.24,
+        "rebalance_10pct": 185.27,
+        "unrebalanced_drift": 182.05,
+        "spy_benchmark": 189.98,
+        "premium_vs_drift_bps": 176.9
+      },
+      {
+        "date": "2026-06-29",
+        "rebalance_5pct": 181.49,
+        "rebalance_10pct": 185.53,
+        "unrebalanced_drift": 182.28,
+        "spy_benchmark": 190.24,
+        "premium_vs_drift_bps": 178.3
+      },
+      {
+        "date": "2026-06-30",
+        "rebalance_5pct": 181.66,
+        "rebalance_10pct": 185.7,
+        "unrebalanced_drift": 182.43,
+        "spy_benchmark": 190.4,
+        "premium_vs_drift_bps": 179.6
+      },
+      {
+        "date": "2026-07-01",
+        "rebalance_5pct": 181.73,
+        "rebalance_10pct": 185.78,
+        "unrebalanced_drift": 182.48,
+        "spy_benchmark": 190.46,
+        "premium_vs_drift_bps": 180.9
+      },
+      {
+        "date": "2026-07-02",
+        "rebalance_5pct": 181.72,
+        "rebalance_10pct": 185.75,
+        "unrebalanced_drift": 182.43,
+        "spy_benchmark": 190.41,
+        "premium_vs_drift_bps": 182.0
+      },
+      {
+        "date": "2026-07-03",
+        "rebalance_5pct": 181.61,
+        "rebalance_10pct": 185.64,
+        "unrebalanced_drift": 182.3,
+        "spy_benchmark": 190.26,
+        "premium_vs_drift_bps": 183.2
+      },
+      {
+        "date": "2026-07-04",
+        "rebalance_5pct": 181.42,
+        "rebalance_10pct": 185.42,
+        "unrebalanced_drift": 182.07,
+        "spy_benchmark": 190.0,
+        "premium_vs_drift_bps": 184.3
+      },
+      {
+        "date": "2026-07-05",
+        "rebalance_5pct": 181.13,
+        "rebalance_10pct": 185.12,
+        "unrebalanced_drift": 181.75,
+        "spy_benchmark": 189.64,
+        "premium_vs_drift_bps": 185.3
+      },
+      {
+        "date": "2026-07-06",
+        "rebalance_5pct": 180.76,
+        "rebalance_10pct": 184.71,
+        "unrebalanced_drift": 181.34,
+        "spy_benchmark": 189.18,
+        "premium_vs_drift_bps": 186.3
+      },
+      {
+        "date": "2026-07-07",
+        "rebalance_5pct": 180.29,
+        "rebalance_10pct": 184.22,
+        "unrebalanced_drift": 180.83,
+        "spy_benchmark": 188.62,
+        "premium_vs_drift_bps": 187.3
+      },
+      {
+        "date": "2026-07-08",
+        "rebalance_5pct": 179.74,
+        "rebalance_10pct": 183.63,
+        "unrebalanced_drift": 180.24,
+        "spy_benchmark": 187.96,
+        "premium_vs_drift_bps": 188.1
+      },
+      {
+        "date": "2026-07-09",
+        "rebalance_5pct": 179.1,
+        "rebalance_10pct": 182.95,
+        "unrebalanced_drift": 179.56,
+        "spy_benchmark": 187.2,
+        "premium_vs_drift_bps": 189.0
+      },
+      {
+        "date": "2026-07-10",
+        "rebalance_5pct": 178.39,
+        "rebalance_10pct": 182.19,
+        "unrebalanced_drift": 178.8,
+        "spy_benchmark": 186.35,
+        "premium_vs_drift_bps": 189.8
+      },
+      {
+        "date": "2026-07-11",
+        "rebalance_5pct": 177.59,
+        "rebalance_10pct": 181.34,
+        "unrebalanced_drift": 177.95,
+        "spy_benchmark": 185.4,
+        "premium_vs_drift_bps": 190.5
+      },
+      {
+        "date": "2026-07-12",
+        "rebalance_5pct": 176.71,
+        "rebalance_10pct": 180.41,
+        "unrebalanced_drift": 177.03,
+        "spy_benchmark": 184.37,
+        "premium_vs_drift_bps": 191.2
+      },
+      {
+        "date": "2026-07-13",
+        "rebalance_5pct": 175.76,
+        "rebalance_10pct": 179.41,
+        "unrebalanced_drift": 176.03,
+        "spy_benchmark": 183.26,
+        "premium_vs_drift_bps": 191.8
+      },
+      {
+        "date": "2026-07-14",
+        "rebalance_5pct": 174.74,
+        "rebalance_10pct": 178.33,
+        "unrebalanced_drift": 174.96,
+        "spy_benchmark": 182.07,
+        "premium_vs_drift_bps": 192.4
+      },
+      {
+        "date": "2026-07-15",
+        "rebalance_5pct": 173.66,
+        "rebalance_10pct": 177.18,
+        "unrebalanced_drift": 173.83,
+        "spy_benchmark": 180.8,
+        "premium_vs_drift_bps": 193.0
+      },
+      {
+        "date": "2026-07-16",
+        "rebalance_5pct": 172.51,
+        "rebalance_10pct": 175.97,
+        "unrebalanced_drift": 172.63,
+        "spy_benchmark": 179.46,
+        "premium_vs_drift_bps": 193.5
+      },
+      {
+        "date": "2026-07-17",
+        "rebalance_5pct": 171.3,
+        "rebalance_10pct": 174.69,
+        "unrebalanced_drift": 171.37,
+        "spy_benchmark": 178.06,
+        "premium_vs_drift_bps": 193.9
+      },
+      {
+        "date": "2026-07-18",
+        "rebalance_5pct": 170.05,
+        "rebalance_10pct": 173.37,
+        "unrebalanced_drift": 170.06,
+        "spy_benchmark": 176.6,
+        "premium_vs_drift_bps": 194.4
+      },
+      {
+        "date": "2026-07-19",
+        "rebalance_5pct": 168.74,
+        "rebalance_10pct": 171.99,
+        "unrebalanced_drift": 168.7,
+        "spy_benchmark": 175.09,
+        "premium_vs_drift_bps": 194.8
+      },
+      {
+        "date": "2026-07-20",
+        "rebalance_5pct": 167.39,
+        "rebalance_10pct": 170.56,
+        "unrebalanced_drift": 167.3,
+        "spy_benchmark": 173.53,
+        "premium_vs_drift_bps": 195.1
+      },
+      {
+        "date": "2026-07-21",
+        "rebalance_5pct": 166.0,
+        "rebalance_10pct": 169.1,
+        "unrebalanced_drift": 165.86,
+        "spy_benchmark": 171.93,
+        "premium_vs_drift_bps": 195.5
+      },
+      {
+        "date": "2026-07-22",
+        "rebalance_5pct": 164.58,
+        "rebalance_10pct": 167.6,
+        "unrebalanced_drift": 164.38,
+        "spy_benchmark": 170.29,
+        "premium_vs_drift_bps": 195.8
+      },
+      {
+        "date": "2026-07-23",
+        "rebalance_5pct": 163.13,
+        "rebalance_10pct": 166.07,
+        "unrebalanced_drift": 162.88,
+        "spy_benchmark": 168.62,
+        "premium_vs_drift_bps": 196.0
+      },
+      {
+        "date": "2026-07-24",
+        "rebalance_5pct": 161.66,
+        "rebalance_10pct": 164.52,
+        "unrebalanced_drift": 161.35,
+        "spy_benchmark": 166.93,
+        "premium_vs_drift_bps": 196.3
+      },
+      {
+        "date": "2026-07-25",
+        "rebalance_5pct": 160.16,
+        "rebalance_10pct": 162.94,
+        "unrebalanced_drift": 159.8,
+        "spy_benchmark": 165.21,
+        "premium_vs_drift_bps": 196.5
+      },
+      {
+        "date": "2026-07-26",
+        "rebalance_5pct": 158.66,
+        "rebalance_10pct": 161.36,
+        "unrebalanced_drift": 158.24,
+        "spy_benchmark": 163.48,
+        "premium_vs_drift_bps": 196.7
+      },
+      {
+        "date": "2026-07-27",
+        "rebalance_5pct": 157.14,
+        "rebalance_10pct": 159.76,
+        "unrebalanced_drift": 156.67,
+        "spy_benchmark": 161.75,
+        "premium_vs_drift_bps": 196.9
+      },
+      {
+        "date": "2026-07-28",
+        "rebalance_5pct": 155.61,
+        "rebalance_10pct": 158.15,
+        "unrebalanced_drift": 155.1,
+        "spy_benchmark": 160.01,
+        "premium_vs_drift_bps": 197.1
+      },
+      {
+        "date": "2026-07-29",
+        "rebalance_5pct": 154.09,
+        "rebalance_10pct": 156.55,
+        "unrebalanced_drift": 153.52,
+        "spy_benchmark": 158.26,
+        "premium_vs_drift_bps": 197.3
+      },
+      {
+        "date": "2026-07-30",
+        "rebalance_5pct": 152.57,
+        "rebalance_10pct": 154.95,
+        "unrebalanced_drift": 151.95,
+        "spy_benchmark": 156.53,
+        "premium_vs_drift_bps": 197.4
+      },
+      {
+        "date": "2026-07-31",
+        "rebalance_5pct": 151.05,
+        "rebalance_10pct": 153.36,
+        "unrebalanced_drift": 150.39,
+        "spy_benchmark": 154.8,
+        "premium_vs_drift_bps": 197.6
+      },
+      {
+        "date": "2026-08-01",
+        "rebalance_5pct": 149.55,
+        "rebalance_10pct": 151.78,
+        "unrebalanced_drift": 148.84,
+        "spy_benchmark": 153.09,
+        "premium_vs_drift_bps": 197.7
+      },
+      {
+        "date": "2026-08-02",
+        "rebalance_5pct": 148.06,
+        "rebalance_10pct": 150.22,
+        "unrebalanced_drift": 147.3,
+        "spy_benchmark": 151.4,
+        "premium_vs_drift_bps": 197.9
+      },
+      {
+        "date": "2026-08-03",
+        "rebalance_5pct": 146.59,
+        "rebalance_10pct": 148.67,
+        "unrebalanced_drift": 145.78,
+        "spy_benchmark": 149.73,
+        "premium_vs_drift_bps": 198.0
+      },
+      {
+        "date": "2026-08-04",
+        "rebalance_5pct": 145.14,
+        "rebalance_10pct": 147.15,
+        "unrebalanced_drift": 144.29,
+        "spy_benchmark": 148.08,
+        "premium_vs_drift_bps": 198.2
+      },
+      {
+        "date": "2026-08-05",
+        "rebalance_5pct": 143.71,
+        "rebalance_10pct": 145.65,
+        "unrebalanced_drift": 142.82,
+        "spy_benchmark": 146.47,
+        "premium_vs_drift_bps": 198.4
+      },
+      {
+        "date": "2026-08-06",
+        "rebalance_5pct": 142.31,
+        "rebalance_10pct": 144.18,
+        "unrebalanced_drift": 141.37,
+        "spy_benchmark": 144.88,
+        "premium_vs_drift_bps": 198.5
+      },
+      {
+        "date": "2026-08-07",
+        "rebalance_5pct": 140.94,
+        "rebalance_10pct": 142.74,
+        "unrebalanced_drift": 139.96,
+        "spy_benchmark": 143.33,
+        "premium_vs_drift_bps": 198.7
+      },
+      {
+        "date": "2026-08-08",
+        "rebalance_5pct": 139.59,
+        "rebalance_10pct": 141.34,
+        "unrebalanced_drift": 138.58,
+        "spy_benchmark": 141.81,
+        "premium_vs_drift_bps": 198.9
+      },
+      {
+        "date": "2026-08-09",
+        "rebalance_5pct": 138.29,
+        "rebalance_10pct": 139.96,
+        "unrebalanced_drift": 137.23,
+        "spy_benchmark": 140.33,
+        "premium_vs_drift_bps": 199.1
+      },
+      {
+        "date": "2026-08-10",
+        "rebalance_5pct": 137.01,
+        "rebalance_10pct": 138.63,
+        "unrebalanced_drift": 135.92,
+        "spy_benchmark": 138.9,
+        "premium_vs_drift_bps": 199.4
+      },
+      {
+        "date": "2026-08-11",
+        "rebalance_5pct": 135.77,
+        "rebalance_10pct": 137.33,
+        "unrebalanced_drift": 134.65,
+        "spy_benchmark": 137.5,
+        "premium_vs_drift_bps": 199.6
+      },
+      {
+        "date": "2026-08-12",
+        "rebalance_5pct": 134.57,
+        "rebalance_10pct": 136.08,
+        "unrebalanced_drift": 133.41,
+        "spy_benchmark": 136.15,
+        "premium_vs_drift_bps": 199.9
+      },
+      {
+        "date": "2026-08-13",
+        "rebalance_5pct": 133.41,
+        "rebalance_10pct": 134.86,
+        "unrebalanced_drift": 132.21,
+        "spy_benchmark": 134.84,
+        "premium_vs_drift_bps": 200.2
+      },
+      {
+        "date": "2026-08-14",
+        "rebalance_5pct": 132.29,
+        "rebalance_10pct": 133.68,
+        "unrebalanced_drift": 131.06,
+        "spy_benchmark": 133.58,
+        "premium_vs_drift_bps": 200.5
+      },
+      {
+        "date": "2026-08-15",
+        "rebalance_5pct": 131.2,
+        "rebalance_10pct": 132.55,
+        "unrebalanced_drift": 129.94,
+        "spy_benchmark": 132.36,
+        "premium_vs_drift_bps": 200.8
+      },
+      {
+        "date": "2026-08-16",
+        "rebalance_5pct": 130.16,
+        "rebalance_10pct": 131.46,
+        "unrebalanced_drift": 128.87,
+        "spy_benchmark": 131.19,
+        "premium_vs_drift_bps": 201.2
+      },
+      {
+        "date": "2026-08-17",
+        "rebalance_5pct": 129.16,
+        "rebalance_10pct": 130.41,
+        "unrebalanced_drift": 127.83,
+        "spy_benchmark": 130.06,
+        "premium_vs_drift_bps": 201.6
+      },
+      {
+        "date": "2026-08-18",
+        "rebalance_5pct": 128.2,
+        "rebalance_10pct": 129.41,
+        "unrebalanced_drift": 126.84,
+        "spy_benchmark": 128.98,
+        "premium_vs_drift_bps": 202.0
+      },
+      {
+        "date": "2026-08-19",
+        "rebalance_5pct": 127.28,
+        "rebalance_10pct": 128.45,
+        "unrebalanced_drift": 125.9,
+        "spy_benchmark": 127.95,
+        "premium_vs_drift_bps": 202.5
+      },
+      {
+        "date": "2026-08-20",
+        "rebalance_5pct": 126.4,
+        "rebalance_10pct": 127.53,
+        "unrebalanced_drift": 124.99,
+        "spy_benchmark": 126.96,
+        "premium_vs_drift_bps": 202.9
+      },
+      {
+        "date": "2026-08-21",
+        "rebalance_5pct": 125.56,
+        "rebalance_10pct": 126.65,
+        "unrebalanced_drift": 124.12,
+        "spy_benchmark": 126.02,
+        "premium_vs_drift_bps": 203.4
+      },
+      {
+        "date": "2026-08-22",
+        "rebalance_5pct": 124.76,
+        "rebalance_10pct": 125.81,
+        "unrebalanced_drift": 123.3,
+        "spy_benchmark": 125.12,
+        "premium_vs_drift_bps": 204.0
+      },
+      {
+        "date": "2026-08-23",
+        "rebalance_5pct": 124.0,
+        "rebalance_10pct": 125.02,
+        "unrebalanced_drift": 122.51,
+        "spy_benchmark": 124.27,
+        "premium_vs_drift_bps": 204.6
+      },
+      {
+        "date": "2026-08-24",
+        "rebalance_5pct": 123.28,
+        "rebalance_10pct": 124.27,
+        "unrebalanced_drift": 121.77,
+        "spy_benchmark": 123.46,
+        "premium_vs_drift_bps": 205.1
+      },
+      {
+        "date": "2026-08-25",
+        "rebalance_5pct": 122.6,
+        "rebalance_10pct": 123.55,
+        "unrebalanced_drift": 121.06,
+        "spy_benchmark": 122.69,
+        "premium_vs_drift_bps": 205.8
+      },
+      {
+        "date": "2026-08-26",
+        "rebalance_5pct": 121.96,
+        "rebalance_10pct": 122.88,
+        "unrebalanced_drift": 120.39,
+        "spy_benchmark": 121.97,
+        "premium_vs_drift_bps": 206.4
+      },
+      {
+        "date": "2026-08-27",
+        "rebalance_5pct": 121.35,
+        "rebalance_10pct": 122.24,
+        "unrebalanced_drift": 119.76,
+        "spy_benchmark": 121.28,
+        "premium_vs_drift_bps": 207.1
+      },
+      {
+        "date": "2026-08-28",
+        "rebalance_5pct": 120.77,
+        "rebalance_10pct": 121.64,
+        "unrebalanced_drift": 119.16,
+        "spy_benchmark": 120.63,
+        "premium_vs_drift_bps": 207.8
+      },
+      {
+        "date": "2026-08-29",
+        "rebalance_5pct": 120.23,
+        "rebalance_10pct": 121.08,
+        "unrebalanced_drift": 118.6,
+        "spy_benchmark": 120.02,
+        "premium_vs_drift_bps": 208.6
+      },
+      {
+        "date": "2026-08-30",
+        "rebalance_5pct": 119.73,
+        "rebalance_10pct": 120.54,
+        "unrebalanced_drift": 118.07,
+        "spy_benchmark": 119.45,
+        "premium_vs_drift_bps": 209.3
+      },
+      {
+        "date": "2026-08-31",
+        "rebalance_5pct": 119.25,
+        "rebalance_10pct": 120.05,
+        "unrebalanced_drift": 117.57,
+        "spy_benchmark": 118.91,
+        "premium_vs_drift_bps": 210.1
+      },
+      {
+        "date": "2026-09-01",
+        "rebalance_5pct": 118.8,
+        "rebalance_10pct": 119.58,
+        "unrebalanced_drift": 117.11,
+        "spy_benchmark": 118.4,
+        "premium_vs_drift_bps": 210.9
+      },
+      {
+        "date": "2026-09-02",
+        "rebalance_5pct": 118.39,
+        "rebalance_10pct": 119.14,
+        "unrebalanced_drift": 116.67,
+        "spy_benchmark": 117.93,
+        "premium_vs_drift_bps": 211.8
+      },
+      {
+        "date": "2026-09-03",
+        "rebalance_5pct": 118.0,
+        "rebalance_10pct": 118.73,
+        "unrebalanced_drift": 116.26,
+        "spy_benchmark": 117.48,
+        "premium_vs_drift_bps": 212.6
+      },
+      {
+        "date": "2026-09-04",
+        "rebalance_5pct": 117.63,
+        "rebalance_10pct": 118.35,
+        "unrebalanced_drift": 115.88,
+        "spy_benchmark": 117.07,
+        "premium_vs_drift_bps": 213.5
+      },
+      {
+        "date": "2026-09-05",
+        "rebalance_5pct": 117.29,
+        "rebalance_10pct": 117.99,
+        "unrebalanced_drift": 115.52,
+        "spy_benchmark": 116.68,
+        "premium_vs_drift_bps": 214.4
+      },
+      {
+        "date": "2026-09-06",
+        "rebalance_5pct": 116.98,
+        "rebalance_10pct": 117.66,
+        "unrebalanced_drift": 115.18,
+        "spy_benchmark": 116.32,
+        "premium_vs_drift_bps": 215.3
+      },
+      {
+        "date": "2026-09-07",
+        "rebalance_5pct": 116.68,
+        "rebalance_10pct": 117.35,
+        "unrebalanced_drift": 114.87,
+        "spy_benchmark": 115.98,
+        "premium_vs_drift_bps": 216.3
+      },
+      {
+        "date": "2026-09-08",
+        "rebalance_5pct": 116.41,
+        "rebalance_10pct": 117.07,
+        "unrebalanced_drift": 114.58,
+        "spy_benchmark": 115.66,
+        "premium_vs_drift_bps": 217.2
+      },
+      {
+        "date": "2026-09-09",
+        "rebalance_5pct": 116.16,
+        "rebalance_10pct": 116.8,
+        "unrebalanced_drift": 114.3,
+        "spy_benchmark": 115.37,
+        "premium_vs_drift_bps": 218.2
+      },
+      {
+        "date": "2026-09-10",
+        "rebalance_5pct": 115.92,
+        "rebalance_10pct": 116.55,
+        "unrebalanced_drift": 114.05,
+        "spy_benchmark": 115.09,
+        "premium_vs_drift_bps": 219.2
+      },
+      {
+        "date": "2026-09-11",
+        "rebalance_5pct": 115.7,
+        "rebalance_10pct": 116.32,
+        "unrebalanced_drift": 113.81,
+        "spy_benchmark": 114.84,
+        "premium_vs_drift_bps": 220.2
+      },
+      {
+        "date": "2026-09-12",
+        "rebalance_5pct": 115.5,
+        "rebalance_10pct": 116.1,
+        "unrebalanced_drift": 113.59,
+        "spy_benchmark": 114.6,
+        "premium_vs_drift_bps": 221.3
+      },
+      {
+        "date": "2026-09-13",
+        "rebalance_5pct": 115.31,
+        "rebalance_10pct": 115.9,
+        "unrebalanced_drift": 113.38,
+        "spy_benchmark": 114.37,
+        "premium_vs_drift_bps": 222.3
+      },
+      {
+        "date": "2026-09-14",
+        "rebalance_5pct": 115.13,
+        "rebalance_10pct": 115.72,
+        "unrebalanced_drift": 113.19,
+        "spy_benchmark": 114.16,
+        "premium_vs_drift_bps": 223.3
+      },
+      {
+        "date": "2026-09-15",
+        "rebalance_5pct": 114.97,
+        "rebalance_10pct": 115.54,
+        "unrebalanced_drift": 113.01,
+        "spy_benchmark": 113.97,
+        "premium_vs_drift_bps": 224.4
+      },
+      {
+        "date": "2026-09-16",
+        "rebalance_5pct": 114.82,
+        "rebalance_10pct": 115.38,
+        "unrebalanced_drift": 112.84,
+        "spy_benchmark": 113.78,
+        "premium_vs_drift_bps": 225.5
+      },
+      {
+        "date": "2026-09-17",
+        "rebalance_5pct": 114.68,
+        "rebalance_10pct": 115.23,
+        "unrebalanced_drift": 112.68,
+        "spy_benchmark": 113.61,
+        "premium_vs_drift_bps": 226.6
+      },
+      {
+        "date": "2026-09-18",
+        "rebalance_5pct": 114.54,
+        "rebalance_10pct": 115.09,
+        "unrebalanced_drift": 112.53,
+        "spy_benchmark": 113.45,
+        "premium_vs_drift_bps": 227.6
+      },
+      {
+        "date": "2026-09-19",
+        "rebalance_5pct": 114.42,
+        "rebalance_10pct": 114.96,
+        "unrebalanced_drift": 112.39,
+        "spy_benchmark": 113.3,
+        "premium_vs_drift_bps": 228.7
+      },
+      {
+        "date": "2026-09-20",
+        "rebalance_5pct": 114.31,
+        "rebalance_10pct": 114.84,
+        "unrebalanced_drift": 112.26,
+        "spy_benchmark": 113.16,
+        "premium_vs_drift_bps": 229.9
+      }
+    ]
+  }
+}

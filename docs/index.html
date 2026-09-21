@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sector Rebalance Engine | Shannon's Demon Research</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html" class="brand">
+      <span>SECTOR</span> REBALANCE
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="active">Research</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Legal & Terms</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="badge badge-green">Quantitative Whitepaper</div>
+    <h1>The Rebalancing Premium (Shannon's Demon)</h1>
+    <p>A mathematical portfolio engine for systematically harvesting cross-sectional volatility across the 11 SPDR sectors without predicting market direction.</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="stat-label">Rebalancing Alpha</div>
+        <div class="stat-val">+258 bps</div>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Historical volatility harvesting premium earned over buy-and-hold drift.</p>
+      </div>
+      <div class="card">
+        <div class="stat-label">Shock Absorption</div>
+        <div class="stat-val">-16.28%</div>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Max drawdown vs SPY's -23.93% during market turbulence.</p>
+      </div>
+      <div class="card">
+        <div class="stat-label">Target Weight</div>
+        <div class="stat-val">9.09%</div>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Equal weight across all 11 US SPDR Sector ETFs (1/11th).</p>
+      </div>
+    </div>
+
+    <h2>Executive Summary & Research History</h2>
+    <p>This project tested common market timing claims across 25+ years of daily data (1998–Present):</p>
+    <ul>
+      <li><strong>3-Month Momentum Rotation:</strong> Failed. Rank autocorrelation was -0.021 with a 32.4% hit-rate (below random 33.3%).</li>
+      <li><strong>Calendar Seasonality:</strong> Failed. Sectors exhibited no statistically significant calendar month effects (except Materials XLB at p=0.012).</li>
+      <li><strong>Macro & Regime Timing:</strong> Failed to generate net alpha due to whipsaw and missing violent V-shaped market recoveries.</li>
+      <li><strong>Systematic Drift Rebalancing (Shannon's Demon):</strong> <strong>Succeeded.</strong> Rebalancing when sectors drift beyond a 5% or 10% band systematically locks in outperforming gains and buys dips, generating a robust Rebalancing Premium.</li>
+    </ul>
+
+    <h2>The 11 SPDR Sector Universe</h2>
+    <p>The engine maintains disciplined equal weighting across all 11 primary economic sectors of the US economy:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Sector</th>
+          <th>Target Weight</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>XLK</strong></td><td>Technology</td><td>9.09%</td><td>Growth & Momentum Engine</td></tr>
+        <tr><td><strong>XLV</strong></td><td>Health Care</td><td>9.09%</td><td>Defensive Compounder</td></tr>
+        <tr><td><strong>XLF</strong></td><td>Financials</td><td>9.09%</td><td>Cyclical & Yield</td></tr>
+        <tr><td><strong>XLI</strong></td><td>Industrials</td><td>9.09%</td><td>Capital Goods & Infrastructure</td></tr>
+        <tr><td><strong>XLY</strong></td><td>Consumer Discretionary</td><td>9.09%</td><td>Consumer Demand</td></tr>
+        <tr><td><strong>XLC</strong></td><td>Communication Services</td><td>9.09%</td><td>Media & Digital Services</td></tr>
+        <tr><td><strong>XLP</strong></td><td>Consumer Staples</td><td>9.09%</td><td>Recession Shield</td></tr>
+        <tr><td><strong>XLE</strong></td><td>Energy</td><td>9.09%</td><td>Inflation Hedge</td></tr>
+        <tr><td><strong>XLU</strong></td><td>Utilities</td><td>9.09%</td><td>Low-Beta Dividend Anchor</td></tr>
+        <tr><td><strong>XLB</strong></td><td>Materials</td><td>9.09%</td><td>Commodities & Raw Materials</td></tr>
+        <tr><td><strong>XLRE</strong></td><td>Real Estate</td><td>9.09%</td><td>Real Property & REITs</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Daily Hidden Markov Model (HMM) Regimes</h2>
+    <p>At the top of the Android application, a daily 3-state Gaussian Hidden Markov Model categorizes the broader market environment into three regimes:</p>
+    <div class="card">
+      <h3 style="color: var(--green);">🟢 Low Volatility / Slow Grind Up</h3>
+      <p>Steady compounding regime. Cross-sectional dispersion is orderly. Default 100% invested in the rebalancing basket.</p>
+    </div>
+    <div class="card">
+      <h3 style="color: var(--yellow);">🟡 Choppy / Sideways</h3>
+      <p>Mean-reverting, oscillating environment. Optimal regime for Shannon's Demon to aggressively harvest volatility across sector rotations.</p>
+    </div>
+    <div class="card">
+      <h3 style="color: var(--red);">🔴 High Volatility / Crash</h3>
+      <p>High-stress turbulent shock. Alerts the investor to severe market distress and provides guidance for optional 50% equity / 50% cash preservation.</p>
+    </div>
+
+    <h2>Risk Profiles: Shock Absorber vs Wealth Compounder</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Shock Absorber (5% Band)</h3>
+        <p>Rebalances whenever any sector drifts $\pm 5.0\%$ from the 9.09% target. Maximizes volatility capture and provides the greatest drawdown reduction during crashes.</p>
+      </div>
+      <div class="card">
+        <h3>Wealth Compounder (10% Band)</h3>
+        <p>Rebalances only when drift reaches $\pm 10.0\%$. Gives strong winners more room to run, minimizing turnover transaction friction and maximizing capital compounding.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Sector Rebalance Platform. For quantitative research & educational purposes only.</p>
+  </footer>
+</body>
+</html>
