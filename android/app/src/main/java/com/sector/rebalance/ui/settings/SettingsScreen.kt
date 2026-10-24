@@ -36,7 +36,7 @@ fun SettingsScreen(
     val syncSource by viewModel.syncSource.collectAsState()
     val isShock = portfolio.driftThresholdPct <= 5.0
 
-    var cloudRunUrlInput by remember { mutableStateOf("") }
+    var cloudRunUrlInput by remember { mutableStateOf(com.sector.rebalance.data.repository.DEFAULT_CLOUD_RUN_URL) }
     var syncStatusMessage by remember { mutableStateOf<String?>(null) }
     var isSyncing by remember { mutableStateOf(false) }
 

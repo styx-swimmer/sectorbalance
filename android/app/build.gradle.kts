@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     // To enable Firebase when google-services.json is placed in app/, uncomment:
-    // alias(libs.plugins.google.services)
+    alias(libs.plugins.google.services)
 }
 
 android {
