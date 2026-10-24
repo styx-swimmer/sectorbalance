@@ -13,8 +13,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Cloud Run expects application to listen on PORT environment variable (default 8080)
+# Cloud Run injects PORT environment variable (default 8080)
 ENV PORT=8080
 EXPOSE 8080
 
-CMD ["python", "main.py"]
+# Use gunicorn to serve HTTP requests on $PORT (timeout 0 for data calculations)
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 server:app

@@ -87,8 +87,21 @@ def cloud_function_entrypoint(request):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Sector Rebalance Daily Pipeline")
+    parser.add_argument("--cli", action="store_true", help="Run once as CLI batch job and exit")
     parser.add_argument("--profile", default="SHOCK_ABSORBER", choices=["SHOCK_ABSORBER", "WEALTH_COMPOUNDER"])
     parser.add_argument("--capital", type=float, default=100000.0)
     args = parser.parse_args()
 
-    run_daily_pipeline(risk_profile=args.profile, capital=args.capital)
+    # If run with --cli, run batch and exit
+    if args.cli:
+        run_daily_pipeline(risk_profile=args.profile, capital=args.capital)
+    else:
+        # If PORT is in environment or executed without flags, start HTTP server
+        # This prevents container crash if someone invokes python main.py
+        if "PORT" in os.environ:
+            print("PORT detected in environment. Starting HTTP web server...")
+            from server import start_server
+            start_server()
+        else:
+            run_daily_pipeline(risk_profile=args.profile, capital=args.capital)
+
