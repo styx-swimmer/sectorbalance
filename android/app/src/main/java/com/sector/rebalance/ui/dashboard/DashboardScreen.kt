@@ -32,6 +32,9 @@ fun DashboardScreen(
 ) {
     val regime by viewModel.marketRegime.collectAsState()
     val portfolio by viewModel.portfolioState.collectAsState()
+    val isLive by viewModel.isLiveSync.collectAsState()
+    val syncTime by viewModel.lastSyncTime.collectAsState()
+    val syncSource by viewModel.syncSource.collectAsState()
 
     LazyColumn(
         modifier = modifier
@@ -40,6 +43,46 @@ fun DashboardScreen(
             .padding(horizontal = 16.dp),
         contentPadding = PaddingValues(top = 16.dp, bottom = 80.dp)
     ) {
+        // 0. Data Source & Sync Status Pill
+        item {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp),
+                color = if (isLive) RegimeGreen.copy(alpha = 0.15f) else RegimeYellow.copy(alpha = 0.15f),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .clip(CircleShape)
+                                .background(if (isLive) RegimeGreen else RegimeYellow)
+                        )
+                        Text(
+                            text = if (isLive) "LIVE: $syncSource" else "DEMO MODE: Sample Data",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (isLive) RegimeGreen else RegimeYellow,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Text(
+                        text = syncTime,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = TextSecondary
+                    )
+                }
+            }
+        }
+
         // 1. Top Market Regime Banner (Hidden Markov Model)
         item {
             MarketRegimeBanner(regime = regime)

@@ -1,5 +1,6 @@
 package com.sector.rebalance.data.repository
 
+import android.util.Log
 import com.sector.rebalance.data.model.HistoricalPoint
 import com.sector.rebalance.data.model.MarketRegime
 import com.sector.rebalance.data.model.PortfolioState
@@ -7,17 +8,29 @@ import com.sector.rebalance.data.model.PerformanceData
 import com.sector.rebalance.data.model.Sector
 import com.sector.rebalance.data.model.StrategyMetric
 import com.sector.rebalance.data.model.TradeOrder
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 interface SectorRepository {
     val marketRegime: Flow<MarketRegime>
     val portfolioState: Flow<PortfolioState>
     val performanceData: Flow<PerformanceData>
+    val isLiveSync: Flow<Boolean>
+    val lastSyncTime: Flow<String>
+    val syncSource: Flow<String>
 
     suspend fun refreshData()
     suspend fun updateRiskProfile(profileKey: String)
+    suspend fun fetchFromCloudRunUrl(baseUrl: String): Result<String>
 }
 
 class FirestoreSectorRepository : SectorRepository {
@@ -31,6 +44,15 @@ class FirestoreSectorRepository : SectorRepository {
     private val _performanceData = MutableStateFlow(createSamplePerformanceData())
     override val performanceData: Flow<PerformanceData> = _performanceData.asStateFlow()
 
+    private val _isLiveSync = MutableStateFlow(false)
+    override val isLiveSync: Flow<Boolean> = _isLiveSync.asStateFlow()
+
+    private val _lastSyncTime = MutableStateFlow("Demo Data (Not Connected)")
+    override val lastSyncTime: Flow<String> = _lastSyncTime.asStateFlow()
+
+    private val _syncSource = MutableStateFlow("Offline Sample Data")
+    override val syncSource: Flow<String> = _syncSource.asStateFlow()
+
     init {
         tryInitFirestore()
     }
@@ -38,12 +60,25 @@ class FirestoreSectorRepository : SectorRepository {
     private fun tryInitFirestore() {
         try {
             val firestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
-            
-            // Listen to Market Regime
+            Log.d("SectorRepository", "Connecting to Firebase Firestore instance...")
+
+            // 1. Listen to Market Regime
             firestore.collection("market_regime").document("daily_state")
                 .addSnapshotListener { snapshot, e ->
-                    if (e != null || snapshot == null || !snapshot.exists()) return@addSnapshotListener
+                    if (e != null) {
+                        Log.w("SectorRepository", "Firestore market_regime error: ${e.message}")
+                        return@addSnapshotListener
+                    }
+                    if (snapshot == null || !snapshot.exists()) return@addSnapshotListener
                     val data = snapshot.data ?: return@addSnapshotListener
+
+                    val updateTime = data["updated_at"] as? String ?: ""
+                    _isLiveSync.value = true
+                    _syncSource.value = "Google Cloud Firestore"
+                    if (updateTime.isNotEmpty()) {
+                        _lastSyncTime.value = formatTimestamp(updateTime)
+                    }
+
                     _marketRegime.value = MarketRegime(
                         regimeKey = data["regime_key"] as? String ?: "LOW_VOL_GRIND_UP",
                         title = data["title"] as? String ?: "Low Volatility / Slow Grind Up",
@@ -52,16 +87,27 @@ class FirestoreSectorRepository : SectorRepository {
                         exposurePct = (data["exposure_pct"] as? Long)?.toInt() ?: 100,
                         description = data["description"] as? String ?: "",
                         confidence = (data["confidence"] as? Double) ?: 85.0,
-                        updatedAt = data["updated_at"] as? String ?: ""
+                        probLowVol = ((data["probabilities"] as? Map<*, *>)?.get("LOW_VOL_GRIND_UP") as? Number)?.toDouble() ?: 80.0,
+                        probChoppy = ((data["probabilities"] as? Map<*, *>)?.get("CHOPPY_SIDEWAYS") as? Number)?.toDouble() ?: 15.0,
+                        probHighVol = ((data["probabilities"] as? Map<*, *>)?.get("HIGH_VOL_CRASH") as? Number)?.toDouble() ?: 5.0,
+                        updatedAt = updateTime
                     )
+                    Log.i("SectorRepository", "Loaded live Market Regime from Firestore! Update time: $updateTime")
                 }
 
-            // Listen to Portfolio State
+            // 2. Listen to Portfolio State
             firestore.collection("portfolio_state").document("current")
                 .addSnapshotListener { snapshot, e ->
                     if (e != null || snapshot == null || !snapshot.exists()) return@addSnapshotListener
                     val data = snapshot.data ?: return@addSnapshotListener
-                    // Parse sectors
+
+                    val updateTime = data["updated_at"] as? String ?: ""
+                    _isLiveSync.value = true
+                    _syncSource.value = "Google Cloud Firestore"
+                    if (updateTime.isNotEmpty()) {
+                        _lastSyncTime.value = formatTimestamp(updateTime)
+                    }
+
                     val rawSectors = data["sectors"] as? List<Map<String, Any>> ?: emptyList()
                     val sectorsList = rawSectors.map { s ->
                         Sector(
@@ -78,6 +124,7 @@ class FirestoreSectorRepository : SectorRepository {
                             isBreached = s["is_breached"] as? Boolean ?: false
                         )
                     }
+
                     val rawOrders = data["orders"] as? List<Map<String, Any>> ?: emptyList()
                     val ordersList = rawOrders.map { o ->
                         TradeOrder(
@@ -107,22 +154,166 @@ class FirestoreSectorRepository : SectorRepository {
                         turnoverDollars = (data["turnover_dollars"] as? Number)?.toDouble() ?: 0.0,
                         turnoverPct = (data["turnover_pct"] as? Number)?.toDouble() ?: 0.0,
                         educationalRationale = data["educational_rationale"] as? String ?: "",
-                        updatedAt = data["updated_at"] as? String ?: ""
+                        updatedAt = updateTime
                     )
+                    Log.i("SectorRepository", "Loaded live Portfolio State from Firestore! Status: ${_portfolioState.value.status}")
                 }
 
         } catch (e: Exception) {
-            // Firebase not initialized yet; sample repository active
+            Log.w("SectorRepository", "Firebase Firestore is not initialized (${e.message}). Falling back to sample demo data.")
+            _isLiveSync.value = false
+            _syncSource.value = "Demo Data (google-services.json not installed)"
         }
     }
 
     override suspend fun refreshData() {
-        // Triggers fresh state
+        // Triggers refresh
     }
 
     override suspend fun updateRiskProfile(profileKey: String) {
         val threshold = if (profileKey == "WEALTH_COMPOUNDER") 10.0 else 5.0
-        _portfolioState.value = createSamplePortfolioState(threshold)
+        if (!_isLiveSync.value) {
+            _portfolioState.value = createSamplePortfolioState(threshold)
+        }
+    }
+
+    override suspend fun fetchFromCloudRunUrl(baseUrl: String): Result<String> = withContext(Dispatchers.IO) {
+        try {
+            var cleanUrl = baseUrl.trim()
+            if (!cleanUrl.startsWith("http://") && !cleanUrl.startsWith("https://")) {
+                cleanUrl = "https://$cleanUrl"
+            }
+            if (!cleanUrl.endsWith("/status") && !cleanUrl.endsWith("/run")) {
+                cleanUrl = cleanUrl.trimEnd('/') + "/status"
+            }
+
+            Log.d("SectorRepository", "Fetching live data from Cloud Run URL: $cleanUrl")
+            val url = URL(cleanUrl)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+            connection.connectTimeout = 10000
+            connection.readTimeout = 15000
+            connection.setRequestProperty("Accept", "application/json")
+
+            val responseCode = connection.responseCode
+            if (responseCode != 200) {
+                return@withContext Result.failure(Exception("HTTP Error $responseCode from Cloud Run endpoint"))
+            }
+
+            val reader = BufferedReader(InputStreamReader(connection.inputStream))
+            val jsonString = reader.readText()
+            reader.close()
+
+            parseAndApplyLiveJson(jsonString)
+            _isLiveSync.value = true
+            _syncSource.value = "Cloud Run HTTP Endpoint"
+
+            Result.success("Connected successfully to Cloud Run! Live calculations updated.")
+        } catch (e: Exception) {
+            Log.e("SectorRepository", "Cloud Run fetch error", e)
+            Result.failure(e)
+        }
+    }
+
+    private fun parseAndApplyLiveJson(jsonStr: String) {
+        val root = JSONObject(jsonStr)
+        val dataObj = if (root.has("data")) root.getJSONObject("data") else root
+        val timestamp = dataObj.optString("timestamp", root.optString("triggered_at", ""))
+
+        if (timestamp.isNotEmpty()) {
+            _lastSyncTime.value = formatTimestamp(timestamp)
+        }
+
+        // Market Regime
+        if (dataObj.has("market_regime")) {
+            val regObj = dataObj.getJSONObject("market_regime")
+            val probsObj = regObj.optJSONObject("probabilities")
+            _marketRegime.value = MarketRegime(
+                regimeKey = regObj.optString("regime_key", "LOW_VOL_GRIND_UP"),
+                title = regObj.optString("title", "Low Volatility / Slow Grind Up"),
+                badgeColorHex = regObj.optString("badge_color", "#10B981"),
+                recommendation = regObj.optString("recommendation", "100% Invested in Rebalancing Engine"),
+                exposurePct = regObj.optInt("exposure_pct", 100),
+                description = regObj.optString("description", ""),
+                confidence = regObj.optDouble("confidence", 85.0),
+                probLowVol = probsObj?.optDouble("LOW_VOL_GRIND_UP", 80.0) ?: 80.0,
+                probChoppy = probsObj?.optDouble("CHOPPY_SIDEWAYS", 15.0) ?: 15.0,
+                probHighVol = probsObj?.optDouble("HIGH_VOL_CRASH", 5.0) ?: 5.0,
+                updatedAt = timestamp
+            )
+        }
+
+        // Portfolio State
+        if (dataObj.has("portfolio_state")) {
+            val portObj = dataObj.getJSONObject("portfolio_state")
+            val sectorsArr = portObj.optJSONArray("sectors") ?: JSONArray()
+            val parsedSectors = mutableListOf<Sector>()
+            for (i in 0 until sectorsArr.length()) {
+                val s = sectorsArr.getJSONObject(i)
+                parsedSectors.add(
+                    Sector(
+                        ticker = s.optString("ticker", ""),
+                        name = s.optString("name", ""),
+                        price = s.optDouble("price", 0.0),
+                        shares = s.optDouble("shares", 0.0),
+                        value = s.optDouble("value", 0.0),
+                        currentWeight = s.optDouble("current_weight", 0.0),
+                        targetWeight = s.optDouble("target_weight", 9.09),
+                        driftPct = s.optDouble("drift_pct", 0.0),
+                        absDriftPct = s.optDouble("abs_drift_pct", 0.0),
+                        status = s.optString("status", "BALANCED"),
+                        isBreached = s.optBoolean("is_breached", false)
+                    )
+                )
+            }
+
+            val ordersArr = portObj.optJSONArray("orders") ?: JSONArray()
+            val parsedOrders = mutableListOf<TradeOrder>()
+            for (i in 0 until ordersArr.length()) {
+                val o = ordersArr.getJSONObject(i)
+                parsedOrders.add(
+                    TradeOrder(
+                        ticker = o.optString("ticker", ""),
+                        name = o.optString("name", ""),
+                        action = o.optString("action", "HOLD"),
+                        currentShares = o.optDouble("current_shares", 0.0),
+                        targetShares = o.optDouble("target_shares", 0.0),
+                        shareChange = o.optDouble("share_change", 0.0),
+                        currentValue = o.optDouble("current_value", 0.0),
+                        targetValue = o.optDouble("target_value", 0.0),
+                        dollarAmount = o.optDouble("dollar_amount", 0.0),
+                        isTriggerSource = o.optBoolean("is_trigger_source", false)
+                    )
+                )
+            }
+
+            _portfolioState.value = PortfolioState(
+                portfolioValue = portObj.optDouble("portfolio_value", 100000.0),
+                targetPerSector = portObj.optDouble("target_per_sector", 9.09),
+                riskProfile = portObj.optString("risk_profile", "Shock Absorber"),
+                driftThresholdPct = portObj.optDouble("drift_threshold_pct", 5.0),
+                maxDriftPct = portObj.optDouble("max_drift_pct", 0.0),
+                status = portObj.optString("status", "BALANCED"),
+                rebalanceNeeded = portObj.optBoolean("rebalance_needed", false),
+                sectors = parsedSectors,
+                orders = parsedOrders,
+                turnoverDollars = portObj.optDouble("turnover_dollars", 0.0),
+                turnoverPct = portObj.optDouble("turnover_pct", 0.0),
+                estimatedFeeDollars = portObj.optDouble("estimated_fee_dollars", 0.0),
+                educationalRationale = portObj.optString("educational_rationale", ""),
+                updatedAt = timestamp
+            )
+        }
+    }
+
+    private fun formatTimestamp(isoStr: String): String {
+        return try {
+            // Converts 2026-10-24T14:30:15.123456Z into readable format
+            val clean = isoStr.replace("Z", "").replace("T", " ")
+            if (clean.contains(".")) clean.substringBefore(".") + " UTC" else "$clean UTC"
+        } catch (e: Exception) {
+            isoStr
+        }
     }
 
     companion object {
@@ -138,13 +329,13 @@ class FirestoreSectorRepository : SectorRepository {
                 probLowVol = 82.0,
                 probChoppy = 13.0,
                 probHighVol = 5.0,
-                updatedAt = "Today at Market Close"
+                updatedAt = "Demo Data (Hardcoded Sample)"
             )
         }
 
         fun createSamplePortfolioState(driftThreshold: Double): PortfolioState {
             val isShock = driftThreshold <= 5.0
-            val xlkWeight = 14.85 // Skewed tech
+            val xlkWeight = 14.85
             val xlkDrift = xlkWeight - 9.09
             val xlkBreached = xlkDrift >= driftThreshold
 
@@ -189,7 +380,8 @@ class FirestoreSectorRepository : SectorRepository {
                     "Rebalancing locks in gains from outperforming Tech to accumulate lagging Energy and Real Estate, capturing the systematic Rebalancing Premium."
                 } else {
                     "Portfolio is within disciplined 10% bounds. Max drift is 5.76% (XLK). No action required; letting winners run to compound."
-                }
+                },
+                updatedAt = "Demo Data (Hardcoded Sample)"
             )
         }
 

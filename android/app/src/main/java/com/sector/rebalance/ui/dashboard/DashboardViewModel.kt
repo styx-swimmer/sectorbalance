@@ -20,6 +20,15 @@ class DashboardViewModel(
     val portfolioState: StateFlow<PortfolioState> = repository.portfolioState
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), PortfolioState())
 
+    val isLiveSync: StateFlow<Boolean> = repository.isLiveSync
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
+    val lastSyncTime: StateFlow<String> = repository.lastSyncTime
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "Demo Data (Not Connected)")
+
+    val syncSource: StateFlow<String> = repository.syncSource
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "Offline Sample Data")
+
     fun refresh() {
         viewModelScope.launch {
             repository.refreshData()
@@ -29,6 +38,17 @@ class DashboardViewModel(
     fun setRiskProfile(profileKey: String) {
         viewModelScope.launch {
             repository.updateRiskProfile(profileKey)
+        }
+    }
+
+    fun syncFromCloudRun(url: String, onResult: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            val result = repository.fetchFromCloudRunUrl(url)
+            if (result.isSuccess) {
+                onResult(true, result.getOrNull() ?: "Sync successful!")
+            } else {
+                onResult(false, result.exceptionOrNull()?.localizedMessage ?: "Sync failed")
+            }
         }
     }
 }
