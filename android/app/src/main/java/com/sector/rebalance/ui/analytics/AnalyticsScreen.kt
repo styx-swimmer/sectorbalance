@@ -29,7 +29,7 @@ fun AnalyticsScreen(
     modifier: Modifier = Modifier
 ) {
     val performance by repository.performanceData.collectAsState(
-        initial = com.sector.rebalance.data.repository.FirestoreSectorRepository.createSamplePerformanceData()
+        initial = com.sector.rebalance.data.repository.FirestoreSectorRepository.createInitialPerformanceData()
     )
 
     LazyColumn(
