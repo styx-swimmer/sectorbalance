@@ -11,6 +11,8 @@ from config import (
     NUM_SECTORS,
     RISK_PROFILES,
     ONE_WAY_FEE_BPS,
+    INCEPTION_HOLDINGS,
+    INCEPTION_CAPITAL,
 )
 
 
@@ -28,37 +30,49 @@ class RebalanceEngine:
         prices: Dict[str, float],
         holdings: Optional[Dict[str, float]] = None,
         total_capital: float = 100000.0,
+        reset_to_equal_weight: bool = False,
     ) -> Dict[str, Any]:
         """
         Analyzes the current 11-sector portfolio:
-          - If holdings (shares) provided, computes current value & weights.
-          - If holdings is None, assumes base portfolio scaled to total_capital.
+          - If holdings (shares) provided, computes current value & weights based on fixed held shares.
+          - If holdings is None and not reset, uses INCEPTION_HOLDINGS to track cumulative drift.
+          - If reset_to_equal_weight is True, rebalances shares equally based on current prices.
           - Calculates drift per sector vs target weight (9.0909%).
           - Identifies breaches of drift bands (5% or 10%).
           - Generates rebalance orders to restore equal weighting.
         """
-        # 1. Determine position values
+        # 1. Determine position values and active shares
         position_values = {}
         shares = {}
 
-        if holdings:
-            for ticker in SECTOR_TICKERS:
-                price = prices.get(ticker, 100.0)
-                sh = holdings.get(ticker, 0.0)
-                shares[ticker] = sh
-                position_values[ticker] = sh * price
-            total_value = sum(position_values.values())
-            if total_value <= 0:
-                total_value = total_capital
-        else:
-            # Default simulated allocation if no live custom holdings passed
+        if reset_to_equal_weight:
+            # Rebalance execution: re-distribute capital equally at current prices
             total_value = total_capital
-            # Distribute with slight organic drift if none provided
             for ticker in SECTOR_TICKERS:
                 price = prices.get(ticker, 100.0)
                 target_val = total_value * self.target_weight
                 shares[ticker] = round(target_val / price, 2)
                 position_values[ticker] = shares[ticker] * price
+            total_value = sum(position_values.values())
+
+        elif holdings and any(holdings.get(t, 0) > 0 for t in SECTOR_TICKERS):
+            # Normal daily run: calculate drift using the actual shares held in portfolio
+            for ticker in SECTOR_TICKERS:
+                price = prices.get(ticker, 100.0)
+                sh = float(holdings.get(ticker, 0.0))
+                shares[ticker] = sh
+                position_values[ticker] = sh * price
+            total_value = sum(position_values.values())
+            if total_value <= 0:
+                total_value = total_capital
+
+        else:
+            # First run / fallback: use inception holdings so drift from September is tracked
+            for ticker in SECTOR_TICKERS:
+                price = prices.get(ticker, 100.0)
+                sh = float(INCEPTION_HOLDINGS.get(ticker, 100.0))
+                shares[ticker] = sh
+                position_values[ticker] = sh * price
             total_value = sum(position_values.values())
 
         # 2. Calculate current weights and drift
@@ -156,6 +170,7 @@ class RebalanceEngine:
             "status": overall_status,
             "rebalance_needed": rebalance_needed,
             "breached_sectors": breached_sectors,
+            "holdings": {t: round(shares[t], 2) for t in SECTOR_TICKERS},
             "sectors": sectors_analysis,
             "orders": orders,
             "turnover_dollars": round(total_turnover_dollars, 2),

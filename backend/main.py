@@ -3,9 +3,10 @@ Main pipeline entrypoint for Sector Rebalancing Platform.
 Executes daily workflow:
   1. Fetch latest 11 SPDR Sector prices and SPY benchmark
   2. Compute 3-state HMM market regime
-  3. Execute Shannon's Demon drift analysis and generate rebalance trade orders
-  4. Compute historical performance and Rebalancing Premium
-  5. Sync updates to Google Cloud Firestore
+  3. Load existing portfolio share positions from Firestore
+  4. Execute Shannon's Demon drift analysis and generate rebalance trade orders
+  5. Compute historical performance and Rebalancing Premium
+  6. Sync updates to Google Cloud Firestore
 """
 import sys
 import os
@@ -22,8 +23,13 @@ from performance_tracker import PerformanceTracker
 from firestore_sync import FirestoreSync
 
 
-def run_daily_pipeline(risk_profile: str = "SHOCK_ABSORBER", capital: float = 100000.0) -> dict:
-    print(f"[{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}] Starting Sector Daily Pipeline...")
+def run_daily_pipeline(
+    risk_profile: str = "SHOCK_ABSORBER",
+    capital: float = 100000.0,
+    reset_to_equal_weight: bool = False,
+) -> dict:
+    now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+    print(f"[{now_str}] Starting Sector Daily Pipeline...")
 
     # 1. Fetch Market Data
     fetcher = MarketDataFetcher()
@@ -38,23 +44,36 @@ def run_daily_pipeline(risk_profile: str = "SHOCK_ABSORBER", capital: float = 10
     regime_result = detector.fit_and_predict(returns, vols)
     print(f"   Daily Regime: [{regime_result['title']}] (Confidence: {regime_result['confidence']}%)")
 
-    # 3. Rebalance Engine
+    # 3. Load Existing Portfolio Holdings from Firestore
+    sync_client = FirestoreSync()
+    existing_state = sync_client.get_portfolio_state()
+    existing_holdings = None
+    if existing_state and not reset_to_equal_weight:
+        existing_holdings = existing_state.get("holdings")
+        if existing_holdings:
+            print("   Loaded persistent share holdings from Firestore.")
+
+    # 4. Rebalance Engine Drift Analysis
     print(f"-> Calculating Shannon's Demon 11-sector drift ({risk_profile})...")
     engine = RebalanceEngine(risk_profile_key=risk_profile)
-    portfolio_state = engine.analyze_portfolio(prices=prices_map, total_capital=capital)
+    portfolio_state = engine.analyze_portfolio(
+        prices=prices_map,
+        holdings=existing_holdings,
+        total_capital=capital,
+        reset_to_equal_weight=reset_to_equal_weight,
+    )
     print(f"   Status: [{portfolio_state['status']}] (Max Drift: {portfolio_state['max_drift_pct']}%)")
     if portfolio_state["rebalance_needed"]:
         print(f"   Rebalance Triggered! Breached sectors: {portfolio_state['breached_sectors']}")
 
-    # 4. Performance & Rebalancing Premium
+    # 5. Performance & Rebalancing Premium
     print("-> Computing historical Rebalancing Premium...")
     perf_tracker = PerformanceTracker()
     performance_data = perf_tracker.generate_performance_curves(days=180)
     print(f"   Shannon's Demon Alpha: +{performance_data['rebalance_alpha_bps']} bps (+{performance_data['rebalance_alpha_pct']}%)")
 
-    # 5. Sync to Firestore
+    # 6. Sync to Firestore
     print("-> Syncing to Google Cloud Firestore...")
-    sync_client = FirestoreSync()
     sync_client.sync_all(
         regime_data=regime_result,
         sectors_data=prices_data,
@@ -64,9 +83,11 @@ def run_daily_pipeline(risk_profile: str = "SHOCK_ABSORBER", capital: float = 10
 
     print("Pipeline completed successfully!")
     return {
-        "regime": regime_result,
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "market_regime": regime_result,
+        "sectors_current": prices_data,
         "portfolio_state": portfolio_state,
-        "performance": performance_data,
+        "performance_history": performance_data,
     }
 
 
@@ -79,7 +100,12 @@ def cloud_function_entrypoint(request):
         req_json = request.get_json(silent=True) or {}
         risk_profile = req_json.get("risk_profile", "SHOCK_ABSORBER")
         capital = float(req_json.get("capital", 100000.0))
-        result = run_daily_pipeline(risk_profile=risk_profile, capital=capital)
+        reset_rebalance = bool(req_json.get("reset", False))
+        result = run_daily_pipeline(
+            risk_profile=risk_profile,
+            capital=capital,
+            reset_to_equal_weight=reset_rebalance,
+        )
         return ({"status": "success", "result": result}, 200, {"Content-Type": "application/json"})
     except Exception as e:
         return ({"status": "error", "message": str(e)}, 500, {"Content-Type": "application/json"})
@@ -90,18 +116,15 @@ if __name__ == "__main__":
     parser.add_argument("--cli", action="store_true", help="Run once as CLI batch job and exit")
     parser.add_argument("--profile", default="SHOCK_ABSORBER", choices=["SHOCK_ABSORBER", "WEALTH_COMPOUNDER"])
     parser.add_argument("--capital", type=float, default=100000.0)
+    parser.add_argument("--reset", action="store_true", help="Reset portfolio to equal weight")
     args = parser.parse_args()
 
-    # If run with --cli, run batch and exit
     if args.cli:
-        run_daily_pipeline(risk_profile=args.profile, capital=args.capital)
+        run_daily_pipeline(risk_profile=args.profile, capital=args.capital, reset_to_equal_weight=args.reset)
     else:
-        # If PORT is in environment or executed without flags, start HTTP server
-        # This prevents container crash if someone invokes python main.py
         if "PORT" in os.environ:
             print("PORT detected in environment. Starting HTTP web server...")
             from server import start_server
             start_server()
         else:
-            run_daily_pipeline(risk_profile=args.profile, capital=args.capital)
-
+            run_daily_pipeline(risk_profile=args.profile, capital=args.capital, reset_to_equal_weight=args.reset)

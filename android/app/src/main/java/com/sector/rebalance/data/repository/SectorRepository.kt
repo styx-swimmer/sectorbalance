@@ -10,6 +10,7 @@ import com.sector.rebalance.data.model.StrategyMetric
 import com.sector.rebalance.data.model.TradeOrder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,12 +30,14 @@ interface SectorRepository {
     val portfolioState: Flow<PortfolioState>
     val performanceData: Flow<PerformanceData>
     val isLiveSync: Flow<Boolean>
+    val isSyncing: Flow<Boolean>
     val lastSyncTime: Flow<String>
     val syncSource: Flow<String>
 
     suspend fun refreshData()
     suspend fun updateRiskProfile(profileKey: String)
     suspend fun fetchFromCloudRunUrl(baseUrl: String = DEFAULT_CLOUD_RUN_URL): Result<String>
+    suspend fun triggerCloudRunCalculation(baseUrl: String = DEFAULT_CLOUD_RUN_URL): Result<String>
 }
 
 class FirestoreSectorRepository : SectorRepository {
@@ -48,9 +51,11 @@ class FirestoreSectorRepository : SectorRepository {
     private val _performanceData = MutableStateFlow(createInitialPerformanceData())
     override val performanceData: Flow<PerformanceData> = _performanceData.asStateFlow()
 
-    // Default directly to LIVE mode with the hardcoded Cloud Run URL
-    private val _isLiveSync = MutableStateFlow(true)
+    private val _isLiveSync = MutableStateFlow(false)
     override val isLiveSync: Flow<Boolean> = _isLiveSync.asStateFlow()
+
+    private val _isSyncing = MutableStateFlow(false)
+    override val isSyncing: Flow<Boolean> = _isSyncing.asStateFlow()
 
     private val _lastSyncTime = MutableStateFlow("Connecting to Cloud Run...")
     override val lastSyncTime: Flow<String> = _lastSyncTime.asStateFlow()
@@ -59,23 +64,37 @@ class FirestoreSectorRepository : SectorRepository {
     override val syncSource: Flow<String> = _syncSource.asStateFlow()
 
     init {
-        // 1. Immediately fetch latest calculated data from the hardcoded Cloud Run endpoint on startup
+        // Startup fetch with automatic retry
         CoroutineScope(Dispatchers.IO).launch {
-            try {
-                Log.i("SectorRepository", "Connecting to live Cloud Run endpoint: $DEFAULT_CLOUD_RUN_URL")
-                val result = fetchFromCloudRunUrl(DEFAULT_CLOUD_RUN_URL)
-                if (result.isSuccess) {
-                    Log.i("SectorRepository", "Live calculations loaded successfully from Cloud Run!")
-                } else {
-                    Log.w("SectorRepository", "Initial Cloud Run fetch notice: ${result.exceptionOrNull()?.message}")
-                }
-            } catch (e: Exception) {
-                Log.w("SectorRepository", "Startup sync exception: ${e.message}")
-            }
+            fetchWithRetry(DEFAULT_CLOUD_RUN_URL, maxRetries = 3)
         }
 
-        // 2. Also register Firestore real-time listener if Firebase is available
+        // Also register Firestore real-time listener if Firebase is available
         tryInitFirestore()
+    }
+
+    private suspend fun fetchWithRetry(baseUrl: String, maxRetries: Int = 3) {
+        var attempt = 0
+        var success = false
+        while (attempt < maxRetries && !success) {
+            attempt++
+            Log.i("SectorRepository", "Attempt $attempt/$maxRetries connecting to Cloud Run: $baseUrl")
+            _lastSyncTime.value = if (attempt == 1) "Connecting to Cloud Run..." else "Retrying ($attempt/$maxRetries)..."
+            val result = fetchFromCloudRunUrl(baseUrl)
+            if (result.isSuccess) {
+                success = true
+                Log.i("SectorRepository", "Live calculations loaded successfully from Cloud Run on attempt $attempt!")
+            } else {
+                Log.w("SectorRepository", "Attempt $attempt failed: ${result.exceptionOrNull()?.message}")
+                if (attempt < maxRetries) {
+                    delay(2000L * attempt)
+                }
+            }
+        }
+        if (!success) {
+            _lastSyncTime.value = "Connection timeout (Tap to retry)"
+            _isLiveSync.value = false
+        }
     }
 
     private fun tryInitFirestore() {
@@ -175,17 +194,16 @@ class FirestoreSectorRepository : SectorRepository {
                 }
 
         } catch (e: Exception) {
-            Log.d("SectorRepository", "Firestore listening in background; primary live sync via Cloud Run.")
+            Log.d("SectorRepository", "Firestore background listener notice: ${e.message}")
         }
     }
 
     override suspend fun refreshData() {
-        fetchFromCloudRunUrl(DEFAULT_CLOUD_RUN_URL)
+        fetchWithRetry(DEFAULT_CLOUD_RUN_URL, maxRetries = 2)
     }
 
     override suspend fun updateRiskProfile(profileKey: String) {
         val threshold = if (profileKey == "WEALTH_COMPOUNDER") 10.0 else 5.0
-        // Locally update tolerance threshold on the current sectors
         val curr = _portfolioState.value
         val breached = curr.sectors.filter { it.absDriftPct >= threshold }.map { it.ticker }
         _portfolioState.value = curr.copy(
@@ -198,6 +216,7 @@ class FirestoreSectorRepository : SectorRepository {
     }
 
     override suspend fun fetchFromCloudRunUrl(baseUrl: String): Result<String> = withContext(Dispatchers.IO) {
+        _isSyncing.value = true
         try {
             var cleanUrl = baseUrl.trim()
             if (!cleanUrl.startsWith("http://") && !cleanUrl.startsWith("https://")) {
@@ -209,14 +228,17 @@ class FirestoreSectorRepository : SectorRepository {
 
             Log.d("SectorRepository", "Connecting to live Cloud Run URL: $cleanUrl")
             val url = URL(cleanUrl)
-            val connection = url.openConnection() as HttpURLConnection
-            connection.requestMethod = "GET"
-            connection.connectTimeout = 10000
-            connection.readTimeout = 15000
-            connection.setRequestProperty("Accept", "application/json")
+            val connection = (url.openConnection() as HttpURLConnection).apply {
+                requestMethod = "GET"
+                connectTimeout = 25000  // 25s for Cloud Run cold start
+                readTimeout = 30000     // 30s read
+                setRequestProperty("Accept", "application/json")
+                setRequestProperty("User-Agent", "SectorRebalanceAndroid/1.0")
+            }
 
             val responseCode = connection.responseCode
             if (responseCode != 200) {
+                _isSyncing.value = false
                 return@withContext Result.failure(Exception("HTTP Error $responseCode from Cloud Run endpoint"))
             }
 
@@ -226,11 +248,58 @@ class FirestoreSectorRepository : SectorRepository {
 
             parseAndApplyLiveJson(jsonString)
             _isLiveSync.value = true
+            _isSyncing.value = false
             _syncSource.value = "Cloud Run Live Backend"
 
             Result.success("Connected to Cloud Run! Live calculation data loaded.")
         } catch (e: Exception) {
+            _isSyncing.value = false
             Log.e("SectorRepository", "Cloud Run fetch error", e)
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun triggerCloudRunCalculation(baseUrl: String): Result<String> = withContext(Dispatchers.IO) {
+        _isSyncing.value = true
+        _lastSyncTime.value = "Calculating on Cloud Run..."
+        try {
+            var cleanUrl = baseUrl.trim()
+            if (!cleanUrl.startsWith("http://") && !cleanUrl.startsWith("https://")) {
+                cleanUrl = "https://$cleanUrl"
+            }
+            cleanUrl = cleanUrl.trimEnd('/') + "/run"
+
+            Log.d("SectorRepository", "Triggering live calculation at: $cleanUrl")
+            val url = URL(cleanUrl)
+            val connection = (url.openConnection() as HttpURLConnection).apply {
+                requestMethod = "POST"
+                connectTimeout = 30000
+                readTimeout = 60000  // calculations can take 15-20s
+                setRequestProperty("Accept", "application/json")
+                setRequestProperty("Content-Type", "application/json")
+                doOutput = true
+                outputStream.write("{}".toByteArray())
+            }
+
+            val responseCode = connection.responseCode
+            if (responseCode != 200) {
+                _isSyncing.value = false
+                return@withContext Result.failure(Exception("HTTP $responseCode from Cloud Run calculation"))
+            }
+
+            val reader = BufferedReader(InputStreamReader(connection.inputStream))
+            val jsonString = reader.readText()
+            reader.close()
+
+            parseAndApplyLiveJson(jsonString)
+            _isLiveSync.value = true
+            _isSyncing.value = false
+            _syncSource.value = "Cloud Run Live Calculation"
+
+            Result.success("Calculation completed! Fresh market drift updated.")
+        } catch (e: Exception) {
+            _isSyncing.value = false
+            Log.e("SectorRepository", "Cloud Run trigger calculation error", e)
             Result.failure(e)
         }
     }

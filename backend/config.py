@@ -4,6 +4,9 @@ Configuration for Sector Rebalancing Platform & HMM Regime Engine.
 """
 from typing import Dict, List
 
+# Default GCP Project ID for Firestore
+DEFAULT_PROJECT_ID = "sectorbalance"
+
 # 11 SPDR Sector ETFs
 SECTOR_TICKERS: List[str] = [
     "XLB",   # Materials
@@ -39,6 +42,24 @@ SECTOR_NAMES: Dict[str, str] = {
 # Equal-Weight Target per sector: 1 / 11 = 9.0909%
 NUM_SECTORS: int = len(SECTOR_TICKERS)
 TARGET_WEIGHT: float = 1.0 / NUM_SECTORS  # ~0.090909
+
+# Inception baseline configuration (established September 21, 2026)
+# Used to initialize holdings if no prior history is in Firestore
+INCEPTION_DATE = "2026-09-21"
+INCEPTION_CAPITAL = 100000.0
+INCEPTION_HOLDINGS: Dict[str, float] = {
+    "XLB": 99.40,    # Materials (~$9,091 at $91.46)
+    "XLE": 102.16,   # Energy (~$9,091 at $88.99)
+    "XLF": 196.35,   # Financials (~$9,091 at $46.30)
+    "XLI": 70.45,    # Industrials (~$9,091 at $129.04)
+    "XLK": 39.42,    # Technology (~$9,091 at $230.59)
+    "XLP": 112.76,   # Consumer Staples (~$9,091 at $80.62)
+    "XLU": 121.15,   # Utilities (~$9,091 at $75.04)
+    "XLV": 61.55,    # Health Care (~$9,091 at $147.69)
+    "XLY": 47.13,    # Consumer Discretionary (~$9,091 at $192.91)
+    "XLC": 101.65,   # Communication Services (~$9,091 at $89.43)
+    "XLRE": 218.53,  # Real Estate (~$9,091 at $41.60)
+}
 
 # Risk Profiles & Drift Tolerances
 # Drift defined as absolute tolerance around the target weight

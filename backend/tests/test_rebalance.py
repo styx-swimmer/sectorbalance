@@ -21,7 +21,9 @@ class TestRebalanceEngine(TestCase := unittest.TestCase):
 
     def test_balanced_portfolio_no_rebalance(self):
         # Initial equal allocation should be balanced
-        result = self.engine_shock.analyze_portfolio(prices=self.sample_prices, total_capital=110000.0)
+        result = self.engine_shock.analyze_portfolio(
+            prices=self.sample_prices, total_capital=110000.0, reset_to_equal_weight=True
+        )
         self.assertFalse(result["rebalance_needed"])
         self.assertEqual(result["status"], "BALANCED")
         self.assertEqual(len(result["breached_sectors"]), 0)

@@ -1,6 +1,7 @@
 package com.sector.rebalance.ui.dashboard
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Autorenew
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -33,6 +35,7 @@ fun DashboardScreen(
     val regime by viewModel.marketRegime.collectAsState()
     val portfolio by viewModel.portfolioState.collectAsState()
     val isLive by viewModel.isLiveSync.collectAsState()
+    val isSyncing by viewModel.isSyncing.collectAsState()
     val syncTime by viewModel.lastSyncTime.collectAsState()
     val syncSource by viewModel.syncSource.collectAsState()
 
@@ -43,17 +46,19 @@ fun DashboardScreen(
             .padding(horizontal = 16.dp),
         contentPadding = PaddingValues(top = 16.dp, bottom = 80.dp)
     ) {
-        // 0. Data Source & Sync Status Pill
+        // 0. Data Source & Sync Status Pill (Clickable to Refresh)
         item {
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 12.dp),
+                    .padding(bottom = 12.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .clickable { viewModel.refresh() },
                 color = if (isLive) RegimeGreen.copy(alpha = 0.15f) else RegimeYellow.copy(alpha = 0.15f),
                 shape = RoundedCornerShape(10.dp)
             ) {
                 Row(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -61,24 +66,44 @@ fun DashboardScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(8.dp)
-                                .clip(CircleShape)
-                                .background(if (isLive) RegimeGreen else RegimeYellow)
-                        )
+                        if (isSyncing) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(10.dp),
+                                color = if (isLive) RegimeGreen else RegimeYellow,
+                                strokeWidth = 1.5.dp
+                            )
+                        } else {
+                            Box(
+                                modifier = Modifier
+                                    .size(8.dp)
+                                    .clip(CircleShape)
+                                    .background(if (isLive) RegimeGreen else RegimeYellow)
+                            )
+                        }
                         Text(
-                            text = if (isLive) "LIVE: $syncSource" else "DEMO MODE: Sample Data",
+                            text = if (isLive) "LIVE: $syncSource" else "CONNECTING: $syncSource",
                             style = MaterialTheme.typography.labelSmall,
                             color = if (isLive) RegimeGreen else RegimeYellow,
                             fontWeight = FontWeight.Bold
                         )
                     }
-                    Text(
-                        text = syncTime,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = TextSecondary
-                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(
+                            text = syncTime,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = TextSecondary
+                        )
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = "Refresh",
+                            tint = TextSecondary,
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
                 }
             }
         }

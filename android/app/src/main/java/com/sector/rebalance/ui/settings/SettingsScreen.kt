@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudDone
 import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.CloudOff
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -98,7 +99,7 @@ fun SettingsScreen(
                             Spacer(modifier = Modifier.width(10.dp))
                             Column {
                                 Text(
-                                    text = if (isLive) "LIVE CALCULATED DATA" else "DEMO / SAMPLE DATA",
+                                    text = if (isLive) "LIVE CALCULATED DATA" else "CONNECTING TO LIVE",
                                     style = MaterialTheme.typography.titleLarge,
                                     color = if (isLive) RegimeGreen else RegimeYellow,
                                     fontWeight = FontWeight.Bold
@@ -131,7 +132,7 @@ fun SettingsScreen(
         // 3. Direct Cloud Run Sync
         item {
             Text(
-                text = "CLOUD RUN DIRECT SYNC",
+                text = "CLOUD RUN BACKEND CONTROLS",
                 style = MaterialTheme.typography.labelSmall,
                 color = TextSecondary,
                 letterSpacing = 1.sp
@@ -145,7 +146,7 @@ fun SettingsScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Fetch live calculations directly from your Cloud Run service URL:",
+                        text = "Cloud Run Endpoint URL:",
                         style = MaterialTheme.typography.bodyMedium,
                         color = TextSecondary
                     )
@@ -167,11 +168,12 @@ fun SettingsScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
+                    // Button 1: Fetch Latest Status
                     Button(
                         onClick = {
                             if (cloudRunUrlInput.isNotBlank()) {
                                 isSyncing = true
-                                syncStatusMessage = "Connecting to Cloud Run..."
+                                syncStatusMessage = "Fetching latest calculations..."
                                 viewModel.syncFromCloudRun(cloudRunUrlInput) { success, msg ->
                                     isSyncing = false
                                     syncStatusMessage = msg
@@ -190,14 +192,47 @@ fun SettingsScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = if (isSyncing) "Fetching..." else "Fetch Live Data From Cloud Run",
+                            text = if (isSyncing) "Fetching..." else "Fetch Latest Data (/status)",
                             color = BackgroundDark,
                             fontWeight = FontWeight.Bold
                         )
                     }
 
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Button 2: Force Recalculate Now (/run)
+                    OutlinedButton(
+                        onClick = {
+                            if (cloudRunUrlInput.isNotBlank()) {
+                                isSyncing = true
+                                syncStatusMessage = "Triggering live calculation on Cloud Run..."
+                                viewModel.triggerCalculation(cloudRunUrlInput) { success, msg ->
+                                    isSyncing = false
+                                    syncStatusMessage = msg
+                                }
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !isSyncing && cloudRunUrlInput.isNotBlank(),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = PrimaryTeal),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, PrimaryTeal),
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = null,
+                            tint = PrimaryTeal
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Force Recalculate Now (/run)",
+                            color = PrimaryTeal,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
                     if (syncStatusMessage != null) {
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
                         Text(
                             text = syncStatusMessage ?: "",
                             style = MaterialTheme.typography.bodySmall,

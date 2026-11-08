@@ -23,11 +23,14 @@ class DashboardViewModel(
     val isLiveSync: StateFlow<Boolean> = repository.isLiveSync
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
+    val isSyncing: StateFlow<Boolean> = repository.isSyncing
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
     val lastSyncTime: StateFlow<String> = repository.lastSyncTime
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "Demo Data (Not Connected)")
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "Connecting...")
 
     val syncSource: StateFlow<String> = repository.syncSource
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "Offline Sample Data")
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "Cloud Run Live Backend")
 
     fun refresh() {
         viewModelScope.launch {
@@ -48,6 +51,17 @@ class DashboardViewModel(
                 onResult(true, result.getOrNull() ?: "Sync successful!")
             } else {
                 onResult(false, result.exceptionOrNull()?.localizedMessage ?: "Sync failed")
+            }
+        }
+    }
+
+    fun triggerCalculation(url: String, onResult: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            val result = repository.triggerCloudRunCalculation(url)
+            if (result.isSuccess) {
+                onResult(true, result.getOrNull() ?: "Calculation finished!")
+            } else {
+                onResult(false, result.exceptionOrNull()?.localizedMessage ?: "Calculation trigger failed")
             }
         }
     }
